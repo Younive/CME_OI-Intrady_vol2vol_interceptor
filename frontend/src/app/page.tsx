@@ -24,6 +24,11 @@ interface RawData {
   Call: { data: DataPoint[] };
   Put: { data: DataPoint[] };
   FuturePrice: number;
+  FutureChg: number;
+  Vol: number;
+  VolChg: number;
+  ATMVol: number;
+  ExtractedAt: string;
   Title: string;
   Subtitle: string;
 }
@@ -61,22 +66,42 @@ export default function Home() {
     text: "#94a3b8"
   };
 
+  const formatPriceChange = (val: number) => {
+    if (val === null || val === undefined) return '-';
+    const sign = val >= 0 ? '+' : '';
+    return `${sign}${val}`;
+  };
+
   return (
     <main className={styles.main}>
       <header className={styles.header}>
-        <h1 className={styles.title}>{data.Title || 'CME Vol2Vol Dashboard'}</h1>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h1 className={styles.title}>{data.Title || 'CME Vol2Vol Dashboard'}</h1>
+          <span style={{ color: '#64748b', fontSize: '0.9rem' }}>Last Updated: {data.ExtractedAt}</span>
+        </div>
+        
         <div className={styles.metaGrid}>
           <div className={styles.metaItem}>
             <span className={styles.metaLabel}>Future Price</span>
             <span className={styles.metaValue}>${data.FuturePrice}</span>
+            <span style={{ color: data.FutureChg >= 0 ? '#22c55e' : '#ef4444', fontSize: '0.8rem', fontWeight: 'bold' }}>
+              ({formatPriceChange(data.FutureChg)})
+            </span>
+          </div>
+          <div className={styles.metaItem}>
+            <span className={styles.metaLabel}>Implied Vol (Vol)</span>
+            <span className={styles.metaValue}>{data.Vol}%</span>
+            <span style={{ color: data.VolChg >= 0 ? '#22c55e' : '#ef4444', fontSize: '0.8rem', fontWeight: 'bold' }}>
+              ({formatPriceChange(data.VolChg)})
+            </span>
+          </div>
+          <div className={styles.metaItem}>
+            <span className={styles.metaLabel}>ATM Vol</span>
+            <span className={styles.metaValue}>{(data.ATMVol * 100).toFixed(2)}%</span>
           </div>
           <div className={styles.metaItem}>
             <span className={styles.metaLabel}>View Type</span>
             <span className={styles.metaValue}>{data.ValueName}</span>
-          </div>
-          <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>Total Strikes</span>
-            <span className={styles.metaValue}>{chartData.length}</span>
           </div>
         </div>
       </header>
