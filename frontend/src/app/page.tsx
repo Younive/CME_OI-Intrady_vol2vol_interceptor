@@ -4,8 +4,6 @@ import React, { useMemo } from 'react';
 import styles from './page.module.css';
 import rawData from '../data/data.json';
 import {
-  BarChart,
-  Bar,
   Line,
   XAxis,
   YAxis,
@@ -14,7 +12,8 @@ import {
   Legend,
   ResponsiveContainer,
   ReferenceLine,
-  ComposedChart
+  ComposedChart,
+  Bar
 } from 'recharts';
 
 interface DataPoint {
@@ -60,9 +59,8 @@ export default function Home() {
     data.VolSettle.data.forEach((p) => {
       const existing = strikesMap.get(p.x);
       if (existing) {
-        existing.volSettle = p.y * 100; // Convert to percentage
+        existing.volSettle = p.y * 100;
       } else {
-        // If we have vol but no vol/oi, we might still want to see it
         strikesMap.set(p.x, { strike: p.x, call: 0, put: 0, total: 0, volSettle: p.y * 100 });
       }
     });
@@ -87,6 +85,16 @@ export default function Home() {
     const sign = val >= 0 ? '+' : '';
     return `${sign}${val}`;
   };
+
+  // Calculate domain to ensure future price is included and visible
+  const xDomain = useMemo(() => {
+    if (chartData.length === 0) return [0, 0];
+    const strikes = chartData.map(d => d.strike);
+    const min = Math.min(...strikes, data.FuturePrice);
+    const max = Math.max(...strikes, data.FuturePrice);
+    const padding = (max - min) * 0.05;
+    return [min - padding, max + padding];
+  }, [chartData, data.FuturePrice]);
 
   return (
     <main className={styles.main}>
@@ -132,10 +140,12 @@ export default function Home() {
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={themeColors.grid} />
               <XAxis 
                 dataKey="strike" 
+                type="number"
+                domain={xDomain}
                 stroke={themeColors.text} 
                 fontSize={12}
-                tickLine={false}
-                axisLine={false}
+                tickLine={true}
+                axisLine={true}
               />
               <YAxis 
                 yAxisId="left"
@@ -143,7 +153,6 @@ export default function Home() {
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
-                label={{ value: 'Contracts', angle: -90, position: 'insideLeft', fill: themeColors.text, fontSize: 12 }}
               />
               <YAxis 
                 yAxisId="right"
@@ -153,7 +162,6 @@ export default function Home() {
                 tickLine={false}
                 axisLine={false}
                 domain={['auto', 'auto']}
-                label={{ value: 'Vol %', angle: 90, position: 'insideRight', fill: themeColors.vol, fontSize: 12 }}
               />
               <Tooltip 
                 contentStyle={{ 
@@ -166,14 +174,23 @@ export default function Home() {
                 cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }}
               />
               <Legend verticalAlign="top" height={36}/>
+              
               <ReferenceLine 
                 x={data.FuturePrice} 
-                yAxisId="left" 
                 stroke={themeColors.future} 
-                strokeDasharray="5 5" 
-                label={{ value: `Future: ${data.FuturePrice}`, position: 'top', fill: themeColors.future, fontSize: 10 }} 
+                strokeWidth={3}
+                strokeDasharray="8 4" 
+                label={{ 
+                  value: `FUTURE: ${data.FuturePrice}`, 
+                  position: 'top', 
+                  fill: themeColors.future, 
+                  fontSize: 14,
+                  fontWeight: 'bold',
+                  backgroundColor: '#000'
+                }} 
               />
-              <Bar yAxisId="left" dataKey="total" fill={themeColors.total} radius={[4, 4, 0, 0]} name="Total Contracts" />
+
+              <Bar yAxisId="left" dataKey="total" fill={themeColors.total} radius={[4, 4, 0, 0]} name="Total Contracts" barSize={15} />
               <Line yAxisId="right" type="monotone" dataKey="volSettle" stroke={themeColors.vol} dot={false} strokeWidth={2} name="Vol Settle %" />
             </ComposedChart>
           </ResponsiveContainer>
@@ -190,10 +207,12 @@ export default function Home() {
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={themeColors.grid} />
               <XAxis 
                 dataKey="strike" 
+                type="number"
+                domain={xDomain}
                 stroke={themeColors.text} 
                 fontSize={12}
-                tickLine={false}
-                axisLine={false}
+                tickLine={true}
+                axisLine={true}
               />
               <YAxis 
                 yAxisId="left"
@@ -222,15 +241,23 @@ export default function Home() {
                 cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }}
               />
               <Legend verticalAlign="top" height={36} wrapperStyle={{ paddingBottom: '20px' }} />
+              
               <ReferenceLine 
                 x={data.FuturePrice} 
-                yAxisId="left" 
                 stroke={themeColors.future} 
-                strokeDasharray="5 5" 
-                label={{ value: `Future: ${data.FuturePrice}`, position: 'top', fill: themeColors.future, fontSize: 10 }} 
+                strokeWidth={3}
+                strokeDasharray="8 4" 
+                label={{ 
+                  value: `FUTURE: ${data.FuturePrice}`, 
+                  position: 'top', 
+                  fill: themeColors.future, 
+                  fontSize: 14,
+                  fontWeight: 'bold'
+                }} 
               />
-              <Bar yAxisId="left" dataKey="call" fill={themeColors.call} radius={[4, 4, 0, 0]} name="Calls" />
-              <Bar yAxisId="left" dataKey="put" fill={themeColors.put} radius={[4, 4, 0, 0]} name="Puts" />
+
+              <Bar yAxisId="left" dataKey="call" fill={themeColors.call} radius={[4, 4, 0, 0]} name="Calls" barSize={10} />
+              <Bar yAxisId="left" dataKey="put" fill={themeColors.put} radius={[4, 4, 0, 0]} name="Puts" barSize={10} />
               <Line yAxisId="right" type="monotone" dataKey="volSettle" stroke={themeColors.vol} dot={false} strokeWidth={2} name="Vol Settle %" />
             </ComposedChart>
           </ResponsiveContainer>
