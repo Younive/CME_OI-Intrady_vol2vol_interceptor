@@ -23,6 +23,36 @@
   text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
+.toggleContainer {
+  display: inline-flex;
+  background: var(--card-bg);
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.toggleButton {
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.toggleButton:hover {
+  color: #fff;
+}
+
+.toggleButton.active {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
 .metaGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));

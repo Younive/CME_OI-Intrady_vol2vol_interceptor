@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import styles from './page.module.css';
-import rawData from '../data/data.json';
+import intradayData from '../data/intraday.json';
+import oiData from '../data/oi.json';
 import {
   Line,
   XAxis,
@@ -27,9 +28,9 @@ interface RawData {
   Put: { data: DataPoint[] };
   VolSettle: { data: DataPoint[] };
   FuturePrice: number;
-  FutureChg: number;
-  Vol: number;
-  VolChg: number;
+  ExtractedFutureChg?: number;
+  ExtractedVol?: number;
+  ExtractedVolChg?: number;
   ATMVol: number;
   ExtractedAt: string;
   Title: string;
@@ -37,9 +38,13 @@ interface RawData {
 }
 
 export default function Home() {
-  const data = rawData as unknown as RawData;
+  const [viewMode, setViewMode] = useState<'intraday' | 'oi'>('intraday');
+
+  const data = (viewMode === 'intraday' ? intradayData : oiData) as unknown as RawData;
 
   const chartData = useMemo(() => {
+    if (!data || !data.Call || !data.Put) return [];
+
     const strikesMap = new Map<number, { strike: number; call: number; put: number; total: number; volSettle: number | null }>();
 
     data.Call.data.forEach((p) => {
@@ -56,14 +61,16 @@ export default function Home() {
       }
     });
 
-    data.VolSettle.data.forEach((p) => {
-      const existing = strikesMap.get(p.x);
-      if (existing) {
-        existing.volSettle = p.y * 100;
-      } else {
-        strikesMap.set(p.x, { strike: p.x, call: 0, put: 0, total: 0, volSettle: p.y * 100 });
-      }
-    });
+    if (data.VolSettle && data.VolSettle.data) {
+      data.VolSettle.data.forEach((p) => {
+        const existing = strikesMap.get(p.x);
+        if (existing) {
+          existing.volSettle = p.y * 100;
+        } else {
+          strikesMap.set(p.x, { strike: p.x, call: 0, put: 0, total: 0, volSettle: p.y * 100 });
+        }
+      });
+    }
 
     return Array.from(strikesMap.values())
       .filter(d => d.total > 0 || d.volSettle !== null)
@@ -80,13 +87,12 @@ export default function Home() {
     text: "#94a3b8"
   };
 
-  const formatPriceChange = (val: number) => {
+  const formatPriceChange = (val?: number) => {
     if (val === null || val === undefined) return '-';
     const sign = val >= 0 ? '+' : '';
     return `${sign}${val}`;
   };
 
-  // Calculate domain to ensure future price is included and visible
   const xDomain = useMemo(() => {
     if (chartData.length === 0) return [0, 0];
     const strikes = chartData.map(d => d.strike);
@@ -100,23 +106,44 @@ export default function Home() {
     <main className={styles.main}>
       <header className={styles.header}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-          <h1 className={styles.title}>{data.Title || 'CME Vol2Vol Dashboard'}</h1>
-          <span style={{ color: '#64748b', fontSize: '0.9rem' }}>Last Updated: {data.ExtractedAt}</span>
+          <div>
+            <h1 className={styles.title}>{data.Title || 'CME Vol2Vol Dashboard'}</h1>
+            <p style={{ color: '#94a3b8', margin: '5px 0 0 0' }}>{data.ValueName}</p>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <div className={styles.toggleContainer}>
+                <button 
+                  className={`${styles.toggleButton} ${viewMode === 'intraday' ? styles.active : ''}`}
+                  onClick={() => setViewMode('intraday')}
+                >
+                  Intraday Volume
+                </button>
+                <button 
+                  className={`${styles.toggleButton} ${viewMode === 'oi' ? styles.active : ''}`}
+                  onClick={() => setViewMode('oi')}
+                >
+                  Open Interest
+                </button>
+            </div>
+            <span style={{ color: '#64748b', fontSize: '0.8rem', display: 'block', marginTop: '10px' }}>
+                Last Updated: {data.ExtractedAt}
+            </span>
+          </div>
         </div>
         
         <div className={styles.metaGrid}>
           <div className={styles.metaItem}>
             <span className={styles.metaLabel}>Future Price</span>
             <span className={styles.metaValue}>${data.FuturePrice}</span>
-            <span style={{ color: data.FutureChg >= 0 ? '#22c55e' : '#ef4444', fontSize: '0.8rem', fontWeight: 'bold' }}>
-              ({formatPriceChange(data.FutureChg)})
+            <span style={{ color: (data.ExtractedFutureChg || 0) >= 0 ? '#22c55e' : '#ef4444', fontSize: '0.8rem', fontWeight: 'bold' }}>
+              ({formatPriceChange(data.ExtractedFutureChg)})
             </span>
           </div>
           <div className={styles.metaItem}>
             <span className={styles.metaLabel}>Implied Vol (Vol)</span>
-            <span className={styles.metaValue}>{data.Vol}%</span>
-            <span style={{ color: data.VolChg >= 0 ? '#22c55e' : '#ef4444', fontSize: '0.8rem', fontWeight: 'bold' }}>
-              ({formatPriceChange(data.VolChg)})
+            <span className={styles.metaValue}>{data.ExtractedVol}%</span>
+            <span style={{ color: (data.ExtractedVolChg || 0) >= 0 ? '#22c55e' : '#ef4444', fontSize: '0.8rem', fontWeight: 'bold' }}>
+              ({formatPriceChange(data.ExtractedVolChg)})
             </span>
           </div>
           <div className={styles.metaItem}>
@@ -124,15 +151,15 @@ export default function Home() {
             <span className={styles.metaValue}>{(data.ATMVol * 100).toFixed(2)}%</span>
           </div>
           <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>View Type</span>
-            <span className={styles.metaValue}>{data.ValueName}</span>
+            <span className={styles.metaLabel}>Data Points</span>
+            <span className={styles.metaValue}>{chartData.length} Strikes</span>
           </div>
         </div>
       </header>
 
       <section className={styles.chartSection}>
         <div className={styles.chartHeader}>
-          <h2 className={styles.chartTitle}>Total Contracts & Vol Settle</h2>
+          <h2 className={styles.chartTitle}>Total Distribution & Vol Settle</h2>
         </div>
         <div className={styles.chartWrapper}>
           <ResponsiveContainer width="100%" height="100%">
@@ -190,8 +217,7 @@ export default function Home() {
                 }} 
               />
 
-
-              <Bar yAxisId="left" dataKey="total" fill={themeColors.total} radius={[4, 4, 0, 0]} name="Total Contracts" barSize={15} />
+              <Bar yAxisId="left" dataKey="total" fill={themeColors.total} radius={[4, 4, 0, 0]} name={viewMode === 'intraday' ? 'Total Volume' : 'Total OI'} barSize={15} />
               <Line yAxisId="right" type="monotone" dataKey="volSettle" stroke={themeColors.vol} dot={false} strokeWidth={2} name="Vol Settle %" />
             </ComposedChart>
           </ResponsiveContainer>
@@ -200,7 +226,7 @@ export default function Home() {
 
       <section className={styles.chartSection}>
         <div className={styles.chartHeader}>
-          <h2 className={styles.chartTitle}>Call/Put & Vol Settle</h2>
+          <h2 className={styles.chartTitle}>Call/Put Breakdown & Vol Settle</h2>
         </div>
         <div className={styles.chartWrapper}>
           <ResponsiveContainer width="100%" height="100%">
@@ -242,6 +268,7 @@ export default function Home() {
                 cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }}
               />
               <Legend verticalAlign="top" height={36} wrapperStyle={{ paddingBottom: '20px' }} />
+              
               <ReferenceLine 
                 x={data.FuturePrice} 
                 yAxisId="left" 
@@ -256,7 +283,6 @@ export default function Home() {
                   fontWeight: 'bold'
                 }} 
               />
-
 
               <Bar yAxisId="left" dataKey="call" fill={themeColors.call} radius={[4, 4, 0, 0]} name="Calls" barSize={10} />
               <Bar yAxisId="left" dataKey="put" fill={themeColors.put} radius={[4, 4, 0, 0]} name="Puts" barSize={10} />
