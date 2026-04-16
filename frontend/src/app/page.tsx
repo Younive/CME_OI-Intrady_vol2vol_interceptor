@@ -6,12 +6,15 @@ import rawData from '../data/data.json';
 import {
   BarChart,
   Bar,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer
+  ResponsiveContainer,
+  ReferenceLine,
+  ComposedChart
 } from 'recharts';
 
 interface DataPoint {
@@ -23,6 +26,7 @@ interface RawData {
   ValueName: string;
   Call: { data: DataPoint[] };
   Put: { data: DataPoint[] };
+  VolSettle: { data: DataPoint[] };
   FuturePrice: number;
   FutureChg: number;
   Vol: number;
@@ -37,10 +41,10 @@ export default function Home() {
   const data = rawData as unknown as RawData;
 
   const chartData = useMemo(() => {
-    const strikesMap = new Map<number, { strike: number; call: number; put: number; total: number }>();
+    const strikesMap = new Map<number, { strike: number; call: number; put: number; total: number; volSettle: number | null }>();
 
     data.Call.data.forEach((p) => {
-      strikesMap.set(p.x, { strike: p.x, call: p.y, put: 0, total: p.y });
+      strikesMap.set(p.x, { strike: p.x, call: p.y, put: 0, total: p.y, volSettle: null });
     });
 
     data.Put.data.forEach((p) => {
@@ -49,12 +53,22 @@ export default function Home() {
         existing.put = p.y;
         existing.total += p.y;
       } else {
-        strikesMap.set(p.x, { strike: p.x, call: 0, put: p.y, total: p.y });
+        strikesMap.set(p.x, { strike: p.x, call: 0, put: p.y, total: p.y, volSettle: null });
+      }
+    });
+
+    data.VolSettle.data.forEach((p) => {
+      const existing = strikesMap.get(p.x);
+      if (existing) {
+        existing.volSettle = p.y * 100; // Convert to percentage
+      } else {
+        // If we have vol but no vol/oi, we might still want to see it
+        strikesMap.set(p.x, { strike: p.x, call: 0, put: 0, total: 0, volSettle: p.y * 100 });
       }
     });
 
     return Array.from(strikesMap.values())
-      .filter(d => d.total > 0)
+      .filter(d => d.total > 0 || d.volSettle !== null)
       .sort((a, b) => a.strike - b.strike);
   }, [data]);
 
@@ -62,6 +76,8 @@ export default function Home() {
     total: "#818cf8",
     call: "#38bdf8",
     put: "#fb923c",
+    vol: "#f43f5e",
+    future: "#facc15",
     grid: "#334155",
     text: "#94a3b8"
   };
@@ -75,7 +91,7 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <header className={styles.header}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
           <h1 className={styles.title}>{data.Title || 'CME Vol2Vol Dashboard'}</h1>
           <span style={{ color: '#64748b', fontSize: '0.9rem' }}>Last Updated: {data.ExtractedAt}</span>
         </div>
@@ -108,11 +124,11 @@ export default function Home() {
 
       <section className={styles.chartSection}>
         <div className={styles.chartHeader}>
-          <h2 className={styles.chartTitle}>Total Contracts Distribution</h2>
+          <h2 className={styles.chartTitle}>Total Contracts & Vol Settle</h2>
         </div>
         <div className={styles.chartWrapper}>
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData}>
+            <ComposedChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={themeColors.grid} />
               <XAxis 
                 dataKey="strike" 
@@ -122,10 +138,22 @@ export default function Home() {
                 axisLine={false}
               />
               <YAxis 
+                yAxisId="left"
                 stroke={themeColors.text} 
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
+                label={{ value: 'Contracts', angle: -90, position: 'insideLeft', fill: themeColors.text, fontSize: 12 }}
+              />
+              <YAxis 
+                yAxisId="right"
+                orientation="right"
+                stroke={themeColors.vol} 
+                fontSize={12}
+                tickLine={false}
+                axisLine={false}
+                domain={['auto', 'auto']}
+                label={{ value: 'Vol %', angle: 90, position: 'insideRight', fill: themeColors.vol, fontSize: 12 }}
               />
               <Tooltip 
                 contentStyle={{ 
@@ -137,19 +165,28 @@ export default function Home() {
                 itemStyle={{ color: '#fff' }}
                 cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }}
               />
-              <Bar dataKey="total" fill={themeColors.total} radius={[4, 4, 0, 0]} name="Total Contracts" />
-            </BarChart>
+              <Legend verticalAlign="top" height={36}/>
+              <ReferenceLine 
+                x={data.FuturePrice} 
+                yAxisId="left" 
+                stroke={themeColors.future} 
+                strokeDasharray="5 5" 
+                label={{ value: `Future: ${data.FuturePrice}`, position: 'top', fill: themeColors.future, fontSize: 10 }} 
+              />
+              <Bar yAxisId="left" dataKey="total" fill={themeColors.total} radius={[4, 4, 0, 0]} name="Total Contracts" />
+              <Line yAxisId="right" type="monotone" dataKey="volSettle" stroke={themeColors.vol} dot={false} strokeWidth={2} name="Vol Settle %" />
+            </ComposedChart>
           </ResponsiveContainer>
         </div>
       </section>
 
       <section className={styles.chartSection}>
         <div className={styles.chartHeader}>
-          <h2 className={styles.chartTitle}>Separate Call vs Put Distribution</h2>
+          <h2 className={styles.chartTitle}>Call/Put & Vol Settle</h2>
         </div>
         <div className={styles.chartWrapper}>
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData}>
+            <ComposedChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={themeColors.grid} />
               <XAxis 
                 dataKey="strike" 
@@ -159,10 +196,20 @@ export default function Home() {
                 axisLine={false}
               />
               <YAxis 
+                yAxisId="left"
                 stroke={themeColors.text} 
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
+              />
+              <YAxis 
+                yAxisId="right"
+                orientation="right"
+                stroke={themeColors.vol} 
+                fontSize={12}
+                tickLine={false}
+                axisLine={false}
+                domain={['auto', 'auto']}
               />
               <Tooltip 
                 contentStyle={{ 
@@ -175,9 +222,17 @@ export default function Home() {
                 cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }}
               />
               <Legend verticalAlign="top" height={36} wrapperStyle={{ paddingBottom: '20px' }} />
-              <Bar dataKey="call" fill={themeColors.call} radius={[4, 4, 0, 0]} name="Calls" />
-              <Bar dataKey="put" fill={themeColors.put} radius={[4, 4, 0, 0]} name="Puts" />
-            </BarChart>
+              <ReferenceLine 
+                x={data.FuturePrice} 
+                yAxisId="left" 
+                stroke={themeColors.future} 
+                strokeDasharray="5 5" 
+                label={{ value: `Future: ${data.FuturePrice}`, position: 'top', fill: themeColors.future, fontSize: 10 }} 
+              />
+              <Bar yAxisId="left" dataKey="call" fill={themeColors.call} radius={[4, 4, 0, 0]} name="Calls" />
+              <Bar yAxisId="left" dataKey="put" fill={themeColors.put} radius={[4, 4, 0, 0]} name="Puts" />
+              <Line yAxisId="right" type="monotone" dataKey="volSettle" stroke={themeColors.vol} dot={false} strokeWidth={2} name="Vol Settle %" />
+            </ComposedChart>
           </ResponsiveContainer>
         </div>
       </section>
