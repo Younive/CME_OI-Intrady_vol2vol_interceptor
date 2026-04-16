@@ -182,13 +182,14 @@ export default function Home() {
                 strokeWidth={3}
                 strokeDasharray="8 4" 
                 label={{ 
-                  value: `FUTURE: ${data.FuturePrice}`, 
-                  position: 'top', 
+                  value: `${data.FuturePrice}`, 
+                  position: 'insideTopLeft',
                   fill: themeColors.future, 
-                  fontSize: 14,
+                  fontSize: 16,
                   fontWeight: 'bold'
                 }} 
               />
+
 
               <Bar yAxisId="left" dataKey="total" fill={themeColors.total} radius={[4, 4, 0, 0]} name="Total Contracts" barSize={15} />
               <Line yAxisId="right" type="monotone" dataKey="volSettle" stroke={themeColors.vol} dot={false} strokeWidth={2} name="Vol Settle %" />
@@ -241,20 +242,21 @@ export default function Home() {
                 cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }}
               />
               <Legend verticalAlign="top" height={36} wrapperStyle={{ paddingBottom: '20px' }} />
-              
               <ReferenceLine 
                 x={data.FuturePrice} 
+                yAxisId="left" 
                 stroke={themeColors.future} 
                 strokeWidth={3}
                 strokeDasharray="8 4" 
                 label={{ 
-                  value: `FUTURE: ${data.FuturePrice}`, 
-                  position: 'top', 
+                  value: `${data.FuturePrice}`, 
+                  position: 'insideTopLeft',
                   fill: themeColors.future, 
-                  fontSize: 14,
+                  fontSize: 16,
                   fontWeight: 'bold'
                 }} 
               />
+
 
               <Bar yAxisId="left" dataKey="call" fill={themeColors.call} radius={[4, 4, 0, 0]} name="Calls" barSize={10} />
               <Bar yAxisId="left" dataKey="put" fill={themeColors.put} radius={[4, 4, 0, 0]} name="Puts" barSize={10} />
