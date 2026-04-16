@@ -1,0 +1,11 @@
+[project]
+name = "cme-oi-intrady-vol2vol-interceptor"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pandas>=3.0.2",
+    "playwright>=1.58.0",
+    "playwright-stealth>=2.0.3",
+]

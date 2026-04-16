@@ -1,0 +1,105 @@
+Project Requirements: CME QuikStrike Vol2Vol Interceptor
+1. Project Overview
+Objective: Build a headless Python automation script that intercepts high-precision options data (Volume, Open Interest, Implied Volatility, and Expected Ranges) from the CME Group QuikStrike web application.
+Specifics: The script must explicitly filter for Gold (OG|GC) futures and target the daily expiration series (0 DTE).
+Approach: Instead of scraping the HTML DOM, the script will use Playwright to interact with the UI, trigger the correct filters, listen to background network traffic, intercept the specific ASP.NET UpdatePanel response, and extract the embedded JSONSettings object.
+
+2. Tech Stack
+Language: Python 3.10+
+
+Core Library: playwright (Async Python API preferred)
+
+Data Processing: json, re (Regex), pandas (optional, for tabular formatting)
+
+Environment: Headless or headed browser execution via Playwright Chromium.
+
+3. Target Information
+Target Base URL: https://cmegroup-tools.quikstrike.net//User/QuikStrikeView.aspx?pid=40&pf=6&viewitemid=IntegratedV2VExpectedRange
+
+(Note: pid=40 attempts to set the product to Gold via URL parameter, but UI verification is required).
+
+Target Response Trigger: The script must wait for an XHR/Fetch response that updates the chart, specifically containing the text JSONSettings.
+
+4. Functional Requirements
+Phase 1: Browser Management & Navigation
+Initialize an asynchronous Playwright Chromium instance.
+
+Navigate to the target URL.
+
+Implement a wait condition for the page to fully load (e.g., waiting for #refreshButton or the chart container to become visible).
+
+Phase 2: UI Configuration (Product & Expiration Filtering)
+The script must interact with the DOM to ensure the correct data is loaded before intercepting.
+
+Product Verification (Gold):
+
+Locate the product selector element (e.g., #ctl11_hlProductText or the .viewheader text).
+
+Verify it says "Gold (OG|GC)". If it defaults to Corn or another product despite the URL parameters, click the selector and click the anchor tag with ProductId="40".
+
+Expiration Selection (0 DTE):
+
+The script must open the Expiration dropdown by clicking the trigger: a#ctl00_ucSelector_hlExpiration (or similar ID containing "Expiration").
+
+Wait for the expiration popup menu (#ctl00_ucSelector_pnlExpirations) to become visible.
+
+Parse the list of available expiration links (a tags inside the popup).
+
+Locate the specific link that represents 0 DTE.
+
+Logic Hint for AI: The title attribute or inner text of these links usually contains the DTE value (e.g., (0.62 DTE) or (0 DTE)). Use a regex or string match (like r'\(0(\.\d+)?\s*DTE\)') to find the anchor tag representing 0 DTE.
+
+Click the 0 DTE link.
+
+Crucial: Clicking this link will trigger an ASP.NET postback (XHR request) which fetches the new data.
+
+Phase 3: Network Interception (The Core Logic)
+Before clicking the 0 DTE expiration link (or immediately after), attach/await an event listener: page.expect_response(handler).
+
+The script must catch the XHR response that follows the 0 DTE selection.
+
+Ensure the response body contains the string "JSONSettings".
+
+(Fallback): If the UI is already on 0 DTE and no click was needed, the script should locate the #refreshButton and trigger a .click() event to force the XHR request.
+
+Phase 4: Data Extraction & Parsing
+Once the target response text is captured, apply the following extraction logic:
+
+Use a Regular Expression to find the embedded JSON: r'"JSONSettings":"({.*?})"'
+
+Extract the matched capture group.
+
+Unescape the string (replace \" with ").
+
+Parse the unescaped string into a Python dictionary using json.loads().
+
+Phase 5: Data Transformation & Output
+From the parsed JSON dictionary, extract the following arrays:
+
+chartData['Call']['data'] (Call Volume/OI)
+
+chartData['Put']['data'] (Put Volume/OI)
+
+chartData['VolSettle']['data'] (High-precision Implied Volatility)
+
+chartData['Ranges']['data'] (Standard Deviation Expected Ranges)
+
+chartData['FuturePrice'] (Underlying Asset Price)
+
+Transform these arrays into a consolidated format (e.g., a Pandas DataFrame keyed by Strike Price 'x').
+
+Output the final structured data to the console and write it to a local file (gold_0dte_vol2vol.json or .csv).
+
+5. Non-Functional Requirements
+Error Handling: Include try/except blocks for page navigation timeouts, missing DOM elements (if QuikStrike updates their UI IDs), and JSON parsing errors.
+
+Stealth: Use standard Playwright stealth practices to avoid basic scraping blocks.
+
+Logging: Output clear console logs detailing which Phase the script is in (e.g., "Selecting 0 DTE expiration...", "Intercepted JSON response...").
+
+6. Context Notes for the AI Builder
+Data Structure Warning: The target response is NOT a clean REST API JSON file. It is a long, pipe-delimited ASP.NET UpdatePanel string. The regex extraction step in Phase 4 is mandatory.
+
+Axis Mapping: In the extracted JSON arrays, the x parameter represents the Strike Price, and the y parameter represents the Value (Volume, OI, or Volatility).
+
+DOM Identifiers: Based on previous inspections, the expiration trigger is ctl00_ucSelector_hlExpiration and the popup container is ctl00_ucSelector_pnlExpirations. Use substring matching or robust Playwright locators (like page.locator("a:has-text('Expiration:')")) to prevent the script from breaking if dynamic IDs shift slightly.
