@@ -5,18 +5,6 @@
         "name": "Call",
         "data": [
             {
-                "x": 4740.0,
-                "y": 0,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": {
-                    "StrikeId": 7370313
-                }
-            },
-            {
                 "x": 4745.0,
                 "y": 0,
                 "color": null,
@@ -390,7 +378,7 @@
             },
             {
                 "x": 4900.0,
-                "y": 258,
+                "y": 292,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -537,18 +525,6 @@
         "name": "Put",
         "data": [
             {
-                "x": 4740.0,
-                "y": 3,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": {
-                    "StrikeId": 7370313
-                }
-            },
-            {
                 "x": 4745.0,
                 "y": 3,
                 "color": null,
@@ -682,7 +658,7 @@
             },
             {
                 "x": 4800.0,
-                "y": 75,
+                "y": 80,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -814,7 +790,7 @@
             },
             {
                 "x": 4855.0,
-                "y": 0,
+                "y": 5,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1064,21 +1040,11 @@
             "Tag": null
         }
     },
-    "Vol": 27.87,
+    "Vol": 27.66,
     "VolSettle": {
         "id": null,
         "name": "Vol Settle",
         "data": [
-            {
-                "x": 4740.0,
-                "y": 0.3223710623497027,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": null
-            },
             {
                 "x": 4745.0,
                 "y": 0.3173404133049189,
@@ -1516,8 +1482,8 @@
         "name": "Ranges",
         "data": [
             {
-                "x": 4806.341586147264,
-                "x2": 4840.2,
+                "x": 4808.988082800161,
+                "x2": 4841.8,
                 "y": 0,
                 "color": "#FFAAAA",
                 "borderColor": null,
@@ -1529,12 +1495,12 @@
                 },
                 "dataLabels": {
                     "enabled": true,
-                    "format": "33.9"
+                    "format": "32.8"
                 }
             },
             {
-                "x": 4840.2,
-                "x2": 4874.058411920999,
+                "x": 4841.8,
+                "x2": 4874.611915497776,
                 "y": 0,
                 "color": "#FFAAAA",
                 "borderColor": null,
@@ -1546,12 +1512,12 @@
                 },
                 "dataLabels": {
                     "enabled": true,
-                    "format": "33.9"
+                    "format": "32.8"
                 }
             },
             {
-                "x": 4772.83679866373,
-                "x2": 4806.341586147264,
+                "x": 4776.508208200974,
+                "x2": 4808.988082800161,
                 "y": 0,
                 "color": "#FFD3BA",
                 "borderColor": null,
@@ -1563,12 +1529,12 @@
                 },
                 "dataLabels": {
                     "enabled": true,
-                    "format": "67.4"
+                    "format": "65.3"
                 }
             },
             {
-                "x": 4874.058411920999,
-                "x2": 4908.273763956389,
+                "x": 4874.611915497776,
+                "x2": 4907.758887476853,
                 "y": 0,
                 "color": "#FFD3BA",
                 "borderColor": null,
@@ -1580,12 +1546,12 @@
                 },
                 "dataLabels": {
                     "enabled": true,
-                    "format": "68.1"
+                    "format": "66"
                 }
             },
             {
-                "x": 4739.565571522131,
-                "x2": 4772.83679866373,
+                "x": 4744.247702466051,
+                "x2": 4776.508208200974,
                 "y": 0,
                 "color": "#FFF9DD",
                 "borderColor": null,
@@ -1597,12 +1563,12 @@
                 },
                 "dataLabels": {
                     "enabled": true,
-                    "format": "100.6"
+                    "format": "97.6"
                 }
             },
             {
-                "x": 4908.273763956389,
-                "x2": 4942.729303986252,
+                "x": 4907.758887476853,
+                "x2": 4941.131256219903,
                 "y": 0,
                 "color": "#FFF9DD",
                 "borderColor": null,
@@ -1614,7 +1580,7 @@
                 },
                 "dataLabels": {
                     "enabled": true,
-                    "format": "102.5"
+                    "format": "99.3"
                 }
             }
         ],
@@ -1647,13 +1613,13 @@
         "TT": null
     },
     "ExpirationId": 65084,
-    "FuturePrice": 4840.2,
-    "ATMVol": 0.278706778248306,
-    "DTE": 0.229942129629629,
+    "FuturePrice": 4841.8,
+    "ATMVol": 0.276582682330627,
+    "DTE": 0.219131944444444,
     "ContainerId": "MainContent_ucViewControl_IntegratedV2VExpectedRange_ucChart_divChart",
     "UpdateLabelId": null,
     "Title": "G3RJ6 Intraday Volume",
-    "Subtitle": "<span style='color:#FCB441'>Put:</span> 359&nbsp;&nbsp;<span style='color:#418CF0'>Call:</span> 747&nbsp;&nbsp;<span style='color:#8C8C8C'>Vol:</span> 27.87&nbsp;&nbsp;<span style='color:#8C8C8C'>Vol Chg:</span> <span style='color:#008000'>0.56</span>&nbsp;&nbsp;<span style='color:#8C8C8C'>Future Chg:</span> <span style='color:#008000'>16.6</span>",
+    "Subtitle": "<span style='color:#FCB441'>Put:</span> 374&nbsp;&nbsp;<span style='color:#418CF0'>Call:</span> 781&nbsp;&nbsp;<span style='color:#8C8C8C'>Vol:</span> 27.66&nbsp;&nbsp;<span style='color:#8C8C8C'>Vol Chg:</span> <span style='color:#008000'>0.35</span>&nbsp;&nbsp;<span style='color:#8C8C8C'>Future Chg:</span> <span style='color:#008000'>18.2</span>",
     "ChartType": null,
     "WatermarkImg": "https://users.quikstrike.net/images/ChartBG-V2.png",
     "WatermarkPos": null,
@@ -1679,7 +1645,7 @@
             "T"
         ]
     },
-    "InstanceParm": "?insid=218038214&qsid=04c7e36d-d540-4ff9-8ce4-3ee19595b074",
+    "InstanceParm": "?insid=218040347&qsid=047925aa-903b-4c3d-a7c6-404dee91cc85",
     "Responsive": false,
     "AutoUpdate": true,
     "IncludeIndicators": false,
@@ -1757,7 +1723,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4757.46970589188,
+            "value": 4760.90002186241,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1777,7 +1743,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4800.49457717729,
+            "value": 4802.63701737326,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1797,7 +1763,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4816.73049124164,
+            "value": 4818.70915220785,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1817,7 +1783,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4826.31405913843,
+            "value": 4828.15170890064,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1837,7 +1803,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4835.81956202347,
+            "value": 4837.37973865856,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1857,7 +1823,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4845.40390921043,
+            "value": 4846.66473997062,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1877,7 +1843,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4854.08754985506,
+            "value": 4855.03605922184,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1897,7 +1863,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4863.17133826808,
+            "value": 4863.60701331171,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1917,7 +1883,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4877.78935285654,
+            "value": 4877.32573427703,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1937,7 +1903,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4906.59766869398,
+            "value": 4905.15073591912,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1957,12 +1923,12 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4840.2,
+            "value": 4841.8,
             "color": "black",
             "dashStyle": "dash",
             "zIndex": 50,
             "label": {
-                "text": "Future: 4840.2",
+                "text": "Future: 4841.8",
                 "align": "left",
                 "textAlign": "left",
                 "style": {
@@ -1978,24 +1944,24 @@
             "IsXAxis": true,
             "AxisIndex": 0,
             "id": null,
-            "from": 4806.341586147264,
-            "to": 4874.058411920999,
+            "from": 4808.988082800161,
+            "to": 4874.611915497776,
             "color": "rgba(169, 169, 169, .25)"
         },
         {
             "IsXAxis": true,
             "AxisIndex": 0,
             "id": null,
-            "from": 4772.83679866373,
-            "to": 4908.273763956389,
+            "from": 4776.508208200974,
+            "to": 4907.758887476853,
             "color": "rgba(169, 169, 169, .2)"
         },
         {
             "IsXAxis": true,
             "AxisIndex": 0,
             "id": null,
-            "from": 4739.565571522131,
-            "to": 4942.729303986252,
+            "from": 4744.247702466051,
+            "to": 4941.131256219903,
             "color": "rgba(169, 169, 169, .15)"
         }
     ],
@@ -2102,7 +2068,7 @@
     "IsMobile": false,
     "IsCompactMobile": false,
     "IsMiniMobile": false,
-    "ExtractedAt": "2026-04-16 18:58:51",
-    "VolChg": 0.56,
-    "FutureChg": 16.6
+    "ExtractedAt": "2026-04-16 19:14:26",
+    "VolChg": 0.35,
+    "FutureChg": 18.2
 }

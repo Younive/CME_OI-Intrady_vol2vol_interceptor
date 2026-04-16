@@ -177,6 +177,7 @@ export default function Home() {
               
               <ReferenceLine 
                 x={data.FuturePrice} 
+                yAxisId="left" 
                 stroke={themeColors.future} 
                 strokeWidth={3}
                 strokeDasharray="8 4" 
@@ -185,8 +186,7 @@ export default function Home() {
                   position: 'top', 
                   fill: themeColors.future, 
                   fontSize: 14,
-                  fontWeight: 'bold',
-                  backgroundColor: '#000'
+                  fontWeight: 'bold'
                 }} 
               />
 
