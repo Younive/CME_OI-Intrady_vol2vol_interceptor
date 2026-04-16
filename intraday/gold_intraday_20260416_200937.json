@@ -5,54 +5,6 @@
         "name": "Call",
         "data": [
             {
-                "x": 4740.0,
-                "y": 0,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": {
-                    "StrikeId": 7370313
-                }
-            },
-            {
-                "x": 4745.0,
-                "y": 0,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": {
-                    "StrikeId": 7370314
-                }
-            },
-            {
-                "x": 4750.0,
-                "y": 0,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": {
-                    "StrikeId": 7349933
-                }
-            },
-            {
-                "x": 4755.0,
-                "y": 0,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": {
-                    "StrikeId": 7370315
-                }
-            },
-            {
                 "x": 4760.0,
                 "y": 79,
                 "color": null,
@@ -234,7 +186,7 @@
             },
             {
                 "x": 4835.0,
-                "y": 11,
+                "y": 15,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -246,7 +198,7 @@
             },
             {
                 "x": 4840.0,
-                "y": 17,
+                "y": 32,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -258,7 +210,7 @@
             },
             {
                 "x": 4845.0,
-                "y": 45,
+                "y": 46,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -270,7 +222,7 @@
             },
             {
                 "x": 4850.0,
-                "y": 23,
+                "y": 30,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -318,7 +270,7 @@
             },
             {
                 "x": 4870.0,
-                "y": 24,
+                "y": 36,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -330,7 +282,7 @@
             },
             {
                 "x": 4875.0,
-                "y": 30,
+                "y": 33,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -354,7 +306,7 @@
             },
             {
                 "x": 4885.0,
-                "y": 16,
+                "y": 18,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -390,7 +342,7 @@
             },
             {
                 "x": 4900.0,
-                "y": 258,
+                "y": 293,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -447,54 +399,6 @@
                 "Tag": {
                     "StrikeId": 7349937
                 }
-            },
-            {
-                "x": 4925.0,
-                "y": 5,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": {
-                    "StrikeId": 7341595
-                }
-            },
-            {
-                "x": 4930.0,
-                "y": 1,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": {
-                    "StrikeId": 7349938
-                }
-            },
-            {
-                "x": 4935.0,
-                "y": 7,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": {
-                    "StrikeId": 7349939
-                }
-            },
-            {
-                "x": 4940.0,
-                "y": 0,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": {
-                    "StrikeId": 7349940
-                }
             }
         ],
         "type": "column",
@@ -537,54 +441,6 @@
         "name": "Put",
         "data": [
             {
-                "x": 4740.0,
-                "y": 3,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": {
-                    "StrikeId": 7370313
-                }
-            },
-            {
-                "x": 4745.0,
-                "y": 3,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": {
-                    "StrikeId": 7370314
-                }
-            },
-            {
-                "x": 4750.0,
-                "y": 8,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": {
-                    "StrikeId": 7349933
-                }
-            },
-            {
-                "x": 4755.0,
-                "y": 3,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": {
-                    "StrikeId": 7370315
-                }
-            },
-            {
                 "x": 4760.0,
                 "y": 2,
                 "color": null,
@@ -598,7 +454,7 @@
             },
             {
                 "x": 4765.0,
-                "y": 1,
+                "y": 8,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -682,7 +538,7 @@
             },
             {
                 "x": 4800.0,
-                "y": 75,
+                "y": 83,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -694,7 +550,7 @@
             },
             {
                 "x": 4805.0,
-                "y": 4,
+                "y": 9,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -706,7 +562,7 @@
             },
             {
                 "x": 4810.0,
-                "y": 3,
+                "y": 4,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -742,7 +598,7 @@
             },
             {
                 "x": 4825.0,
-                "y": 15,
+                "y": 17,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -754,7 +610,7 @@
             },
             {
                 "x": 4830.0,
-                "y": 34,
+                "y": 85,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -766,7 +622,7 @@
             },
             {
                 "x": 4835.0,
-                "y": 5,
+                "y": 10,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -778,7 +634,7 @@
             },
             {
                 "x": 4840.0,
-                "y": 14,
+                "y": 20,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -814,7 +670,7 @@
             },
             {
                 "x": 4855.0,
-                "y": 0,
+                "y": 5,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -850,7 +706,7 @@
             },
             {
                 "x": 4870.0,
-                "y": 1,
+                "y": 2,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -979,54 +835,6 @@
                 "Tag": {
                     "StrikeId": 7349937
                 }
-            },
-            {
-                "x": 4925.0,
-                "y": 0,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": {
-                    "StrikeId": 7341595
-                }
-            },
-            {
-                "x": 4930.0,
-                "y": 0,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": {
-                    "StrikeId": 7349938
-                }
-            },
-            {
-                "x": 4935.0,
-                "y": 0,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": {
-                    "StrikeId": 7349939
-                }
-            },
-            {
-                "x": 4940.0,
-                "y": 0,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": {
-                    "StrikeId": 7349940
-                }
             }
         ],
         "type": "column",
@@ -1064,51 +872,376 @@
             "Tag": null
         }
     },
-    "Vol": 27.87,
+    "Vol": {
+        "id": null,
+        "name": "Vol",
+        "data": [
+            {
+                "x": 4760.0,
+                "y": 0.43213688430842,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4765.0,
+                "y": 0.414672632352449,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4770.0,
+                "y": 0.397773285396397,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4775.0,
+                "y": 0.381518571928609,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4780.0,
+                "y": 0.36598305410007,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4785.0,
+                "y": 0.351236126502044,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4790.0,
+                "y": 0.337342017446645,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4795.0,
+                "y": 0.32435978812282,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4800.0,
+                "y": 0.312343333120225,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4805.0,
+                "y": 0.301341379730729,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4810.0,
+                "y": 0.2913974885887,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4815.0,
+                "y": 0.282550053496379,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4820.0,
+                "y": 0.274832301336573,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4825.0,
+                "y": 0.268272292159963,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4830.0,
+                "y": 0.262892918952275,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4835.0,
+                "y": 0.25871190809994,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4840.0,
+                "y": 0.255741819069954,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4845.0,
+                "y": 0.253990044322563,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4850.0,
+                "y": 0.25345880939858,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4855.0,
+                "y": 0.254145173385041,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4860.0,
+                "y": 0.256041028012987,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4865.0,
+                "y": 0.259133098210441,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4870.0,
+                "y": 0.263402942451648,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4875.0,
+                "y": 0.268826951971278,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4880.0,
+                "y": 0.275376350997249,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4885.0,
+                "y": 0.283017196954461,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4890.0,
+                "y": 0.291710380930454,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4895.0,
+                "y": 0.301411626802292,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4900.0,
+                "y": 0.312071491091046,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4905.0,
+                "y": 0.323635364329675,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4910.0,
+                "y": 0.336043469462311,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4915.0,
+                "y": 0.349230862746481,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4920.0,
+                "y": 0.363127433636691,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            }
+        ],
+        "type": "spline",
+        "showCheckbox": false,
+        "selected": false,
+        "showInLegend": true,
+        "showInStats": true,
+        "includeInDataExport": true,
+        "color": "#e74c3c",
+        "opacity": 1.0,
+        "dashStyle": null,
+        "yAxis": 1,
+        "xAxis": 0,
+        "enableMouseTracking": true,
+        "lineWidth": 1,
+        "connectNulls": false,
+        "visible": false,
+        "marker": {
+            "enabled": false,
+            "enabledThreshold": 2
+        },
+        "custom": {
+            "Key": null,
+            "LegendText": null,
+            "LabelText": null
+        },
+        "tooltip": {},
+        "centerInCategory": false,
+        "linkedTo": null,
+        "TooltipUseChartCoordinatesY": false,
+        "Tag": null,
+        "TT": null
+    },
     "VolSettle": {
         "id": null,
         "name": "Vol Settle",
         "data": [
-            {
-                "x": 4740.0,
-                "y": 0.3223710623497027,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": null
-            },
-            {
-                "x": 4745.0,
-                "y": 0.3173404133049189,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": null
-            },
-            {
-                "x": 4750.0,
-                "y": 0.31255990191493765,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": null
-            },
-            {
-                "x": 4755.0,
-                "y": 0.30803607955022017,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": null
-            },
             {
                 "x": 4760.0,
                 "y": 0.3037748414571979,
@@ -1438,46 +1571,6 @@
                 "name": null,
                 "TipLabel": null,
                 "Tag": null
-            },
-            {
-                "x": 4925.0,
-                "y": 0.31040389887130004,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": null
-            },
-            {
-                "x": 4930.0,
-                "y": 0.31389403435605345,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": null
-            },
-            {
-                "x": 4935.0,
-                "y": 0.3174397781585867,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": null
-            },
-            {
-                "x": 4940.0,
-                "y": 0.3210234078214853,
-                "color": null,
-                "borderColor": null,
-                "borderWidth": 0,
-                "name": null,
-                "TipLabel": null,
-                "Tag": null
             }
         ],
         "type": "spline",
@@ -1516,8 +1609,8 @@
         "name": "Ranges",
         "data": [
             {
-                "x": 4806.341586147264,
-                "x2": 4840.2,
+                "x": 4811.644377062593,
+                "x2": 4839.0,
                 "y": 0,
                 "color": "#FFAAAA",
                 "borderColor": null,
@@ -1529,12 +1622,12 @@
                 },
                 "dataLabels": {
                     "enabled": true,
-                    "format": "33.9"
+                    "format": "27.4"
                 }
             },
             {
-                "x": 4840.2,
-                "x2": 4874.058411920999,
+                "x": 4839.0,
+                "x2": 4866.355622113681,
                 "y": 0,
                 "color": "#FFAAAA",
                 "borderColor": null,
@@ -1546,12 +1639,12 @@
                 },
                 "dataLabels": {
                     "enabled": true,
-                    "format": "33.9"
+                    "format": "27.4"
                 }
             },
             {
-                "x": 4772.83679866373,
-                "x2": 4806.341586147264,
+                "x": 4784.519853012748,
+                "x2": 4811.644377062593,
                 "y": 0,
                 "color": "#FFD3BA",
                 "borderColor": null,
@@ -1563,12 +1656,12 @@
                 },
                 "dataLabels": {
                     "enabled": true,
-                    "format": "67.4"
+                    "format": "54.5"
                 }
             },
             {
-                "x": 4874.058411920999,
-                "x2": 4908.273763956389,
+                "x": 4866.355622113681,
+                "x2": 4893.944091628338,
                 "y": 0,
                 "color": "#FFD3BA",
                 "borderColor": null,
@@ -1580,12 +1673,12 @@
                 },
                 "dataLabels": {
                     "enabled": true,
-                    "format": "68.1"
+                    "format": "54.9"
                 }
             },
             {
-                "x": 4739.565571522131,
-                "x2": 4772.83679866373,
+                "x": 4757.54823714715,
+                "x2": 4784.519853012748,
                 "y": 0,
                 "color": "#FFF9DD",
                 "borderColor": null,
@@ -1597,12 +1690,12 @@
                 },
                 "dataLabels": {
                     "enabled": true,
-                    "format": "100.6"
+                    "format": "81.5"
                 }
             },
             {
-                "x": 4908.273763956389,
-                "x2": 4942.729303986252,
+                "x": 4893.944091628338,
+                "x2": 4921.688966409948,
                 "y": 0,
                 "color": "#FFF9DD",
                 "borderColor": null,
@@ -1614,7 +1707,7 @@
                 },
                 "dataLabels": {
                     "enabled": true,
-                    "format": "102.5"
+                    "format": "82.7"
                 }
             }
         ],
@@ -1647,13 +1740,13 @@
         "TT": null
     },
     "ExpirationId": 65084,
-    "FuturePrice": 4840.2,
-    "ATMVol": 0.278706778248306,
-    "DTE": 0.229942129629629,
+    "FuturePrice": 4839.0,
+    "ATMVol": 0.253990044322563,
+    "DTE": 0.180821759259259,
     "ContainerId": "MainContent_ucViewControl_IntegratedV2VExpectedRange_ucChart_divChart",
     "UpdateLabelId": null,
     "Title": "G3RJ6 Intraday Volume",
-    "Subtitle": "<span style='color:#FCB441'>Put:</span> 359&nbsp;&nbsp;<span style='color:#418CF0'>Call:</span> 747&nbsp;&nbsp;<span style='color:#8C8C8C'>Vol:</span> 27.87&nbsp;&nbsp;<span style='color:#8C8C8C'>Vol Chg:</span> <span style='color:#008000'>0.56</span>&nbsp;&nbsp;<span style='color:#8C8C8C'>Future Chg:</span> <span style='color:#008000'>16.6</span>",
+    "Subtitle": "<span style='color:#FCB441'>Put:</span> 505&nbsp;&nbsp;<span style='color:#418CF0'>Call:</span> 826&nbsp;&nbsp;<span style='color:#8C8C8C'>Vol:</span> 25.40&nbsp;&nbsp;<span style='color:#8C8C8C'>Vol Chg:</span> <span style='color:#ff0000'>-1.99</span>&nbsp;&nbsp;<span style='color:#8C8C8C'>Future Chg:</span> <span style='color:#008000'>15.4</span>",
     "ChartType": null,
     "WatermarkImg": "https://users.quikstrike.net/images/ChartBG-V2.png",
     "WatermarkPos": null,
@@ -1679,7 +1772,7 @@
             "T"
         ]
     },
-    "InstanceParm": "?insid=218038214&qsid=04c7e36d-d540-4ff9-8ce4-3ee19595b074",
+    "InstanceParm": "?insid=218048386&qsid=ac8056b4-a844-4297-81ef-a3d4971113e1",
     "Responsive": false,
     "AutoUpdate": true,
     "IncludeIndicators": false,
@@ -1757,7 +1850,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4757.46970589188,
+            "value": 4775.35512560065,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1777,7 +1870,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4800.49457717729,
+            "value": 4810.33884150103,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1797,7 +1890,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4816.73049124164,
+            "value": 4823.55857270385,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1817,7 +1910,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4826.31405913843,
+            "value": 4831.27795010236,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1837,7 +1930,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4835.81956202347,
+            "value": 4838.99358010549,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1857,7 +1950,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4845.40390921043,
+            "value": 4846.87886458475,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1877,7 +1970,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4854.08754985506,
+            "value": 4853.99293280746,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1897,7 +1990,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4863.17133826808,
+            "value": 4861.2546853563,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1917,7 +2010,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4877.78935285654,
+            "value": 4873.18195003532,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1937,7 +2030,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4906.59766869398,
+            "value": 4898.39574976228,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1957,12 +2050,12 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4840.2,
+            "value": 4839.0,
             "color": "black",
             "dashStyle": "dash",
             "zIndex": 50,
             "label": {
-                "text": "Future: 4840.2",
+                "text": "Future: 4839",
                 "align": "left",
                 "textAlign": "left",
                 "style": {
@@ -1978,24 +2071,24 @@
             "IsXAxis": true,
             "AxisIndex": 0,
             "id": null,
-            "from": 4806.341586147264,
-            "to": 4874.058411920999,
+            "from": 4811.644377062593,
+            "to": 4866.355622113681,
             "color": "rgba(169, 169, 169, .25)"
         },
         {
             "IsXAxis": true,
             "AxisIndex": 0,
             "id": null,
-            "from": 4772.83679866373,
-            "to": 4908.273763956389,
+            "from": 4784.519853012748,
+            "to": 4893.944091628338,
             "color": "rgba(169, 169, 169, .2)"
         },
         {
             "IsXAxis": true,
             "AxisIndex": 0,
             "id": null,
-            "from": 4739.565571522131,
-            "to": 4942.729303986252,
+            "from": 4757.54823714715,
+            "to": 4921.688966409948,
             "color": "rgba(169, 169, 169, .15)"
         }
     ],
@@ -2101,8 +2194,5 @@
     "Tag": null,
     "IsMobile": false,
     "IsCompactMobile": false,
-    "IsMiniMobile": false,
-    "ExtractedAt": "2026-04-16 18:58:51",
-    "VolChg": 0.56,
-    "FutureChg": 16.6
+    "IsMiniMobile": false
 }

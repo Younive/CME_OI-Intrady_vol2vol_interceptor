@@ -1,12 +1,108 @@
 {
-    "ValueName": "Open Interest",
+    "ValueName": "Intraday Volume",
     "Call": {
         "id": null,
         "name": "Call",
         "data": [
             {
+                "x": 4720.0,
+                "y": 0,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7377166
+                }
+            },
+            {
+                "x": 4725.0,
+                "y": 0,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7349932
+                }
+            },
+            {
+                "x": 4730.0,
+                "y": 0,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7377167
+                }
+            },
+            {
+                "x": 4735.0,
+                "y": 0,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7370312
+                }
+            },
+            {
+                "x": 4740.0,
+                "y": 0,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7370313
+                }
+            },
+            {
+                "x": 4745.0,
+                "y": 0,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7370314
+                }
+            },
+            {
+                "x": 4750.0,
+                "y": 0,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7349933
+                }
+            },
+            {
+                "x": 4755.0,
+                "y": 0,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7370315
+                }
+            },
+            {
                 "x": 4760.0,
-                "y": 81,
+                "y": 79,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -42,7 +138,7 @@
             },
             {
                 "x": 4775.0,
-                "y": 41,
+                "y": 0,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -54,7 +150,7 @@
             },
             {
                 "x": 4780.0,
-                "y": 5,
+                "y": 0,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -66,7 +162,7 @@
             },
             {
                 "x": 4785.0,
-                "y": 16,
+                "y": 1,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -78,7 +174,7 @@
             },
             {
                 "x": 4790.0,
-                "y": 3,
+                "y": 0,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -102,7 +198,7 @@
             },
             {
                 "x": 4800.0,
-                "y": 39,
+                "y": 1,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -114,7 +210,7 @@
             },
             {
                 "x": 4805.0,
-                "y": 3,
+                "y": 0,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -126,7 +222,7 @@
             },
             {
                 "x": 4810.0,
-                "y": 4,
+                "y": 0,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -138,7 +234,7 @@
             },
             {
                 "x": 4815.0,
-                "y": 3,
+                "y": 0,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -150,7 +246,7 @@
             },
             {
                 "x": 4820.0,
-                "y": 25,
+                "y": 10,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -162,7 +258,7 @@
             },
             {
                 "x": 4825.0,
-                "y": 69,
+                "y": 31,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -174,7 +270,7 @@
             },
             {
                 "x": 4830.0,
-                "y": 16,
+                "y": 17,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -186,7 +282,7 @@
             },
             {
                 "x": 4835.0,
-                "y": 32,
+                "y": 11,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -198,7 +294,7 @@
             },
             {
                 "x": 4840.0,
-                "y": 15,
+                "y": 17,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -210,7 +306,7 @@
             },
             {
                 "x": 4845.0,
-                "y": 31,
+                "y": 43,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -222,7 +318,7 @@
             },
             {
                 "x": 4850.0,
-                "y": 138,
+                "y": 23,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -234,7 +330,7 @@
             },
             {
                 "x": 4855.0,
-                "y": 5,
+                "y": 1,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -246,7 +342,7 @@
             },
             {
                 "x": 4860.0,
-                "y": 41,
+                "y": 61,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -258,7 +354,7 @@
             },
             {
                 "x": 4865.0,
-                "y": 22,
+                "y": 8,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -270,7 +366,7 @@
             },
             {
                 "x": 4870.0,
-                "y": 63,
+                "y": 24,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -282,7 +378,7 @@
             },
             {
                 "x": 4875.0,
-                "y": 63,
+                "y": 30,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -294,7 +390,7 @@
             },
             {
                 "x": 4880.0,
-                "y": 8,
+                "y": 5,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -306,7 +402,7 @@
             },
             {
                 "x": 4885.0,
-                "y": 84,
+                "y": 16,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -318,7 +414,7 @@
             },
             {
                 "x": 4890.0,
-                "y": 5,
+                "y": 1,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -330,7 +426,7 @@
             },
             {
                 "x": 4895.0,
-                "y": 6,
+                "y": 0,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -342,7 +438,7 @@
             },
             {
                 "x": 4900.0,
-                "y": 375,
+                "y": 226,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -354,7 +450,7 @@
             },
             {
                 "x": 4905.0,
-                "y": 41,
+                "y": 0,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -366,7 +462,7 @@
             },
             {
                 "x": 4910.0,
-                "y": 8,
+                "y": 5,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -378,7 +474,7 @@
             },
             {
                 "x": 4915.0,
-                "y": 28,
+                "y": 3,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -390,7 +486,7 @@
             },
             {
                 "x": 4920.0,
-                "y": 133,
+                "y": 2,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -398,6 +494,66 @@
                 "TipLabel": null,
                 "Tag": {
                     "StrikeId": 7349937
+                }
+            },
+            {
+                "x": 4925.0,
+                "y": 2,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7341595
+                }
+            },
+            {
+                "x": 4930.0,
+                "y": 1,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7349938
+                }
+            },
+            {
+                "x": 4935.0,
+                "y": 0,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7349939
+                }
+            },
+            {
+                "x": 4940.0,
+                "y": 0,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7349940
+                }
+            },
+            {
+                "x": 4945.0,
+                "y": 2,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7349941
                 }
             }
         ],
@@ -441,8 +597,104 @@
         "name": "Put",
         "data": [
             {
-                "x": 4760.0,
+                "x": 4720.0,
+                "y": 1,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7377166
+                }
+            },
+            {
+                "x": 4725.0,
                 "y": 3,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7349932
+                }
+            },
+            {
+                "x": 4730.0,
+                "y": 3,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7377167
+                }
+            },
+            {
+                "x": 4735.0,
+                "y": 0,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7370312
+                }
+            },
+            {
+                "x": 4740.0,
+                "y": 2,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7370313
+                }
+            },
+            {
+                "x": 4745.0,
+                "y": 3,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7370314
+                }
+            },
+            {
+                "x": 4750.0,
+                "y": 8,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7349933
+                }
+            },
+            {
+                "x": 4755.0,
+                "y": 3,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7370315
+                }
+            },
+            {
+                "x": 4760.0,
+                "y": 2,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -454,7 +706,7 @@
             },
             {
                 "x": 4765.0,
-                "y": 6,
+                "y": 1,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -466,7 +718,7 @@
             },
             {
                 "x": 4770.0,
-                "y": 6,
+                "y": 12,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -478,7 +730,7 @@
             },
             {
                 "x": 4775.0,
-                "y": 27,
+                "y": 17,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -490,7 +742,7 @@
             },
             {
                 "x": 4780.0,
-                "y": 10,
+                "y": 2,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -502,7 +754,7 @@
             },
             {
                 "x": 4785.0,
-                "y": 31,
+                "y": 25,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -514,7 +766,7 @@
             },
             {
                 "x": 4790.0,
-                "y": 29,
+                "y": 6,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -526,7 +778,7 @@
             },
             {
                 "x": 4795.0,
-                "y": 6,
+                "y": 3,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -538,7 +790,7 @@
             },
             {
                 "x": 4800.0,
-                "y": 124,
+                "y": 75,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -550,7 +802,7 @@
             },
             {
                 "x": 4805.0,
-                "y": 6,
+                "y": 4,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -562,7 +814,7 @@
             },
             {
                 "x": 4810.0,
-                "y": 9,
+                "y": 2,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -574,7 +826,7 @@
             },
             {
                 "x": 4815.0,
-                "y": 26,
+                "y": 8,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -586,7 +838,7 @@
             },
             {
                 "x": 4820.0,
-                "y": 17,
+                "y": 15,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -598,7 +850,7 @@
             },
             {
                 "x": 4825.0,
-                "y": 9,
+                "y": 13,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -610,7 +862,7 @@
             },
             {
                 "x": 4830.0,
-                "y": 8,
+                "y": 32,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -622,7 +874,7 @@
             },
             {
                 "x": 4835.0,
-                "y": 6,
+                "y": 3,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -634,7 +886,7 @@
             },
             {
                 "x": 4840.0,
-                "y": 37,
+                "y": 9,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -646,7 +898,7 @@
             },
             {
                 "x": 4845.0,
-                "y": 1,
+                "y": 5,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -658,7 +910,7 @@
             },
             {
                 "x": 4850.0,
-                "y": 20,
+                "y": 11,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -670,7 +922,7 @@
             },
             {
                 "x": 4855.0,
-                "y": 6,
+                "y": 0,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -682,7 +934,7 @@
             },
             {
                 "x": 4860.0,
-                "y": 2,
+                "y": 4,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -694,7 +946,7 @@
             },
             {
                 "x": 4865.0,
-                "y": 2,
+                "y": 0,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -706,7 +958,7 @@
             },
             {
                 "x": 4870.0,
-                "y": 2,
+                "y": 1,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -718,7 +970,7 @@
             },
             {
                 "x": 4875.0,
-                "y": 3,
+                "y": 4,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -778,7 +1030,7 @@
             },
             {
                 "x": 4900.0,
-                "y": 4,
+                "y": 0,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -826,7 +1078,7 @@
             },
             {
                 "x": 4920.0,
-                "y": 1,
+                "y": 0,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -834,6 +1086,66 @@
                 "TipLabel": null,
                 "Tag": {
                     "StrikeId": 7349937
+                }
+            },
+            {
+                "x": 4925.0,
+                "y": 0,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7341595
+                }
+            },
+            {
+                "x": 4930.0,
+                "y": 0,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7349938
+                }
+            },
+            {
+                "x": 4935.0,
+                "y": 0,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7349939
+                }
+            },
+            {
+                "x": 4940.0,
+                "y": 0,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7349940
+                }
+            },
+            {
+                "x": 4945.0,
+                "y": 0,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": {
+                    "StrikeId": 7349941
                 }
             }
         ],
@@ -877,8 +1189,88 @@
         "name": "Vol",
         "data": [
             {
+                "x": 4720.0,
+                "y": 0.486226446810178,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4725.0,
+                "y": 0.47338724398287,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4730.0,
+                "y": 0.460501279914752,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4735.0,
+                "y": 0.447651467635296,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4740.0,
+                "y": 0.434916635538684,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4745.0,
+                "y": 0.422371528635267,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4750.0,
+                "y": 0.410086807503831,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4755.0,
+                "y": 0.398129049164709,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
                 "x": 4760.0,
-                "y": 0.43213688430842,
+                "y": 0.38656074681785,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -888,7 +1280,7 @@
             },
             {
                 "x": 4765.0,
-                "y": 0.414672632352449,
+                "y": 0.375440308911493,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -898,7 +1290,7 @@
             },
             {
                 "x": 4770.0,
-                "y": 0.397773285396397,
+                "y": 0.364822061033919,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -908,7 +1300,7 @@
             },
             {
                 "x": 4775.0,
-                "y": 0.381518571928609,
+                "y": 0.354756244283635,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -918,7 +1310,7 @@
             },
             {
                 "x": 4780.0,
-                "y": 0.36598305410007,
+                "y": 0.345289015298476,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -928,7 +1320,7 @@
             },
             {
                 "x": 4785.0,
-                "y": 0.351236126502044,
+                "y": 0.336462447943632,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -938,7 +1330,7 @@
             },
             {
                 "x": 4790.0,
-                "y": 0.337342017446645,
+                "y": 0.328314531041542,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -948,7 +1340,7 @@
             },
             {
                 "x": 4795.0,
-                "y": 0.32435978812282,
+                "y": 0.32087917055469,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -958,7 +1350,7 @@
             },
             {
                 "x": 4800.0,
-                "y": 0.312343333120225,
+                "y": 0.314186187024461,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -968,7 +1360,7 @@
             },
             {
                 "x": 4805.0,
-                "y": 0.301341379730729,
+                "y": 0.308261318714358,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -978,7 +1370,7 @@
             },
             {
                 "x": 4810.0,
-                "y": 0.2913974885887,
+                "y": 0.303126218728721,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -988,7 +1380,7 @@
             },
             {
                 "x": 4815.0,
-                "y": 0.282550053496379,
+                "y": 0.298798456904478,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -998,7 +1390,7 @@
             },
             {
                 "x": 4820.0,
-                "y": 0.274832301336573,
+                "y": 0.295291518443264,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1008,7 +1400,7 @@
             },
             {
                 "x": 4825.0,
-                "y": 0.268272292159963,
+                "y": 0.292614805483026,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1018,7 +1410,7 @@
             },
             {
                 "x": 4830.0,
-                "y": 0.262892918952275,
+                "y": 0.290773635584628,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1028,7 +1420,7 @@
             },
             {
                 "x": 4835.0,
-                "y": 0.25871190809994,
+                "y": 0.289769242663169,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1038,7 +1430,7 @@
             },
             {
                 "x": 4840.0,
-                "y": 0.255741819069954,
+                "y": 0.289598776464118,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1048,7 +1440,7 @@
             },
             {
                 "x": 4845.0,
-                "y": 0.253990044322563,
+                "y": 0.290255303058075,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1058,7 +1450,7 @@
             },
             {
                 "x": 4850.0,
-                "y": 0.25345880939858,
+                "y": 0.291727804229595,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1068,7 +1460,7 @@
             },
             {
                 "x": 4855.0,
-                "y": 0.254145173385041,
+                "y": 0.294001178321196,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1078,7 +1470,7 @@
             },
             {
                 "x": 4860.0,
-                "y": 0.256041028012987,
+                "y": 0.297056239127414,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1088,7 +1480,7 @@
             },
             {
                 "x": 4865.0,
-                "y": 0.259133098210441,
+                "y": 0.300869716884336,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1098,7 +1490,7 @@
             },
             {
                 "x": 4870.0,
-                "y": 0.263402942451648,
+                "y": 0.305414258007659,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1108,7 +1500,7 @@
             },
             {
                 "x": 4875.0,
-                "y": 0.268826951971278,
+                "y": 0.310658424714347,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1118,7 +1510,7 @@
             },
             {
                 "x": 4880.0,
-                "y": 0.275376350997249,
+                "y": 0.316566695109941,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1128,7 +1520,7 @@
             },
             {
                 "x": 4885.0,
-                "y": 0.283017196954461,
+                "y": 0.323099463712424,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1138,7 +1530,7 @@
             },
             {
                 "x": 4890.0,
-                "y": 0.291710380930454,
+                "y": 0.330213040899252,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1148,7 +1540,7 @@
             },
             {
                 "x": 4895.0,
-                "y": 0.301411626802292,
+                "y": 0.337859653460328,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1158,7 +1550,7 @@
             },
             {
                 "x": 4900.0,
-                "y": 0.312071491091046,
+                "y": 0.345987443783088,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1168,7 +1560,7 @@
             },
             {
                 "x": 4905.0,
-                "y": 0.323635364329675,
+                "y": 0.354540470230859,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1178,7 +1570,7 @@
             },
             {
                 "x": 4910.0,
-                "y": 0.336043469462311,
+                "y": 0.363458707841346,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1188,7 +1580,7 @@
             },
             {
                 "x": 4915.0,
-                "y": 0.349230862746481,
+                "y": 0.372678047249792,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1198,7 +1590,57 @@
             },
             {
                 "x": 4920.0,
-                "y": 0.363127433636691,
+                "y": 0.382130295212846,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4925.0,
+                "y": 0.391743174433941,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4930.0,
+                "y": 0.401440324087162,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4935.0,
+                "y": 0.411141299060546,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4940.0,
+                "y": 0.420761570421746,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4945.0,
+                "y": 0.430212524952367,
                 "color": null,
                 "borderColor": null,
                 "borderWidth": 0,
@@ -1242,6 +1684,86 @@
         "id": null,
         "name": "Vol Settle",
         "data": [
+            {
+                "x": 4720.0,
+                "y": 0.34484104626608314,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4725.0,
+                "y": 0.33888848111746483,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4730.0,
+                "y": 0.3331532877382415,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4735.0,
+                "y": 0.3276446416530234,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4740.0,
+                "y": 0.3223710623497027,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4745.0,
+                "y": 0.3173404133049189,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4750.0,
+                "y": 0.31255990191493765,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4755.0,
+                "y": 0.30803607955022017,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
             {
                 "x": 4760.0,
                 "y": 0.3037748414571979,
@@ -1571,6 +2093,56 @@
                 "name": null,
                 "TipLabel": null,
                 "Tag": null
+            },
+            {
+                "x": 4925.0,
+                "y": 0.31040389887130004,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4930.0,
+                "y": 0.31389403435605345,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4935.0,
+                "y": 0.3174397781585867,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4940.0,
+                "y": 0.3210234078214853,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
+            },
+            {
+                "x": 4945.0,
+                "y": 0.3246265448506165,
+                "color": null,
+                "borderColor": null,
+                "borderWidth": 0,
+                "name": null,
+                "TipLabel": null,
+                "Tag": null
             }
         ],
         "type": "spline",
@@ -1609,8 +2181,8 @@
         "name": "Ranges",
         "data": [
             {
-                "x": 4810.950960438248,
-                "x2": 4838.3,
+                "x": 4791.519134186514,
+                "x2": 4830.2,
                 "y": 0,
                 "color": "#FFAAAA",
                 "borderColor": null,
@@ -1622,12 +2194,12 @@
                 },
                 "dataLabels": {
                     "enabled": true,
-                    "format": "27.3"
+                    "format": "38.7"
                 }
             },
             {
-                "x": 4838.3,
-                "x2": 4865.649038738461,
+                "x": 4830.2,
+                "x2": 4868.880862502419,
                 "y": 0,
                 "color": "#FFAAAA",
                 "borderColor": null,
@@ -1639,12 +2211,12 @@
                 },
                 "dataLabels": {
                     "enabled": true,
-                    "format": "27.3"
+                    "format": "38.7"
                 }
             },
             {
-                "x": 4783.8329420474665,
-                "x2": 4810.950960438248,
+                "x": 4753.3004487019525,
+                "x2": 4791.519134186514,
                 "y": 0,
                 "color": "#FFD3BA",
                 "borderColor": null,
@@ -1656,12 +2228,12 @@
                 },
                 "dataLabels": {
                     "enabled": true,
-                    "format": "54.5"
+                    "format": "76.9"
                 }
             },
             {
-                "x": 4865.649038738461,
-                "x2": 4893.230846404832,
+                "x": 4868.880862502419,
+                "x2": 4908.028866789967,
                 "y": 0,
                 "color": "#FFD3BA",
                 "borderColor": null,
@@ -1673,12 +2245,12 @@
                 },
                 "dataLabels": {
                     "enabled": true,
-                    "format": "54.9"
+                    "format": "77.8"
                 }
             },
             {
-                "x": 4756.867780529991,
-                "x2": 4783.8329420474665,
+                "x": 4715.386607647574,
+                "x2": 4753.3004487019525,
                 "y": 0,
                 "color": "#FFF9DD",
                 "borderColor": null,
@@ -1690,12 +2262,12 @@
                 },
                 "dataLabels": {
                     "enabled": true,
-                    "format": "81.4"
+                    "format": "114.8"
                 }
             },
             {
-                "x": 4893.230846404832,
-                "x2": 4920.969006514234,
+                "x": 4908.028866789967,
+                "x2": 4947.491638738291,
                 "y": 0,
                 "color": "#FFF9DD",
                 "borderColor": null,
@@ -1707,7 +2279,7 @@
                 },
                 "dataLabels": {
                     "enabled": true,
-                    "format": "82.7"
+                    "format": "117.3"
                 }
             }
         ],
@@ -1740,13 +2312,13 @@
         "TT": null
     },
     "ExpirationId": 65084,
-    "FuturePrice": 4838.3,
-    "ATMVol": 0.253990044322563,
-    "DTE": 0.180787037037037,
+    "FuturePrice": 4830.2,
+    "ATMVol": 0.289769242663169,
+    "DTE": 0.278784722222222,
     "ContainerId": "MainContent_ucViewControl_IntegratedV2VExpectedRange_ucChart_divChart",
     "UpdateLabelId": null,
-    "Title": "G3RJ6 Open Interest",
-    "Subtitle": "<span style='color:#FCB441'>Put:</span> 2,661&nbsp;&nbsp;<span style='color:#418CF0'>Call:</span> 2,315&nbsp;&nbsp;<span style='color:#8C8C8C'>Vol:</span> 25.40&nbsp;&nbsp;<span style='color:#8C8C8C'>Vol Chg:</span> <span style='color:#ff0000'>-1.99</span>&nbsp;&nbsp;<span style='color:#8C8C8C'>Future Chg:</span> <span style='color:#008000'>14.7</span>",
+    "Title": "G3RJ6 Intraday Volume",
+    "Subtitle": "<span style='color:#FCB441'>Put:</span> 308&nbsp;&nbsp;<span style='color:#418CF0'>Call:</span> 691&nbsp;&nbsp;<span style='color:#8C8C8C'>Vol:</span> 28.98&nbsp;&nbsp;<span style='color:#8C8C8C'>Vol Chg:</span> <span style='color:#008000'>1.71</span>&nbsp;&nbsp;<span style='color:#8C8C8C'>Future Chg:</span> <span style='color:#008000'>6.6</span>",
     "ChartType": null,
     "WatermarkImg": "https://users.quikstrike.net/images/ChartBG-V2.png",
     "WatermarkPos": null,
@@ -1772,7 +2344,7 @@
             "T"
         ]
     },
-    "InstanceParm": "?insid=218048386&qsid=ac8056b4-a844-4297-81ef-a3d4971113e1",
+    "InstanceParm": "?insid=218030384&qsid=e2218c0f-60bc-4361-af9f-120d5a7a985e",
     "Responsive": false,
     "AutoUpdate": true,
     "IncludeIndicators": false,
@@ -1850,7 +2422,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4775.35512560065,
+            "value": 4736.08056528313,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1870,7 +2442,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4810.33884150103,
+            "value": 4787.0711018588,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1890,7 +2462,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4823.55857270385,
+            "value": 4805.94848150577,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1910,7 +2482,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4831.27795010236,
+            "value": 4816.6239650839,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1930,7 +2502,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4838.99358010549,
+            "value": 4827.38912227094,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1950,7 +2522,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4846.87886458475,
+            "value": 4838.57467702796,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1970,7 +2542,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4853.99293280746,
+            "value": 4848.68413080302,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -1990,7 +2562,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4861.2546853563,
+            "value": 4859.00216347343,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -2010,7 +2582,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4873.18195003532,
+            "value": 4876.6778120262,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -2030,7 +2602,7 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4898.39574976228,
+            "value": 4916.28242697699,
             "color": "#9B9B9B",
             "dashStyle": "dash",
             "zIndex": 1,
@@ -2050,12 +2622,12 @@
             "AxisIndex": 0,
             "id": null,
             "width": 1,
-            "value": 4838.3,
+            "value": 4830.2,
             "color": "black",
             "dashStyle": "dash",
             "zIndex": 50,
             "label": {
-                "text": "Future: 4838.3",
+                "text": "Future: 4830.2",
                 "align": "left",
                 "textAlign": "left",
                 "style": {
@@ -2071,24 +2643,24 @@
             "IsXAxis": true,
             "AxisIndex": 0,
             "id": null,
-            "from": 4810.950960438248,
-            "to": 4865.649038738461,
+            "from": 4791.519134186514,
+            "to": 4868.880862502419,
             "color": "rgba(169, 169, 169, .25)"
         },
         {
             "IsXAxis": true,
             "AxisIndex": 0,
             "id": null,
-            "from": 4783.8329420474665,
-            "to": 4893.230846404832,
+            "from": 4753.3004487019525,
+            "to": 4908.028866789967,
             "color": "rgba(169, 169, 169, .2)"
         },
         {
             "IsXAxis": true,
             "AxisIndex": 0,
             "id": null,
-            "from": 4756.867780529991,
-            "to": 4920.969006514234,
+            "from": 4715.386607647574,
+            "to": 4947.491638738291,
             "color": "rgba(169, 169, 169, .15)"
         }
     ],
