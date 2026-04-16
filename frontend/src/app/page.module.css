@@ -1,0 +1,119 @@
+/* frontend/src/app/page.module.css */
+.main {
+  padding: 1rem;
+  width: 100%;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--foreground);
+  box-sizing: border-box;
+}
+
+.header {
+  margin-bottom: 2rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.metaGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.metaItem {
+  background: var(--card-bg);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+
+.metaLabel {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  margin-bottom: 0.25rem;
+}
+
+.metaValue {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.chartSection {
+  margin-bottom: 3rem;
+  width: 100%;
+}
+
+.chartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.chartTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #cbd5e1;
+}
+
+.chartWrapper {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  height: 500px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.footer {
+  margin-top: 3rem;
+  padding: 2rem 0;
+  text-align: center;
+  color: #64748b;
+  font-size: 0.8rem;
+  border-top: 1px solid var(--border);
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .main {
+    padding: 2rem;
+  }
+  
+  .title {
+    font-size: 2.25rem;
+  }
+
+  .metaValue {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .chartWrapper {
+    height: 350px;
+    padding: 0.5rem;
+  }
+  
+  .metaGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
