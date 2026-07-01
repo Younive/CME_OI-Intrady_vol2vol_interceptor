@@ -51,7 +51,7 @@ def upload_to_gcs(data, product, data_type, bucket_name):
 
 
 def load_state(base_dir="."):
-    """Load the last-hash state map. Phase 1 file-based; Airflow Variables in Phase 2."""
+    """Load the last-hash state map (file backend)."""
     path = os.path.join(base_dir, STATE_FILE)
     if not os.path.exists(path):
         return {}
@@ -62,3 +62,26 @@ def load_state(base_dir="."):
 def save_state(state, base_dir="."):
     with open(os.path.join(base_dir, STATE_FILE), "w") as f:
         json.dump(state, f, indent=2)
+
+
+def get_stored_hash(product, data_type):
+    """Last uploaded hash. Airflow Variable when running in Airflow, else file."""
+    key = f"{product}_{data_type}"
+    try:
+        from airflow.models import Variable
+
+        return Variable.get(f"last_hash_{key}", default_var="")
+    except Exception:
+        return load_state().get(key, "")
+
+
+def set_stored_hash(product, data_type, value):
+    key = f"{product}_{data_type}"
+    try:
+        from airflow.models import Variable
+
+        Variable.set(f"last_hash_{key}", value)
+    except Exception:
+        state = load_state()
+        state[key] = value
+        save_state(state)

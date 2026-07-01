@@ -1,5 +1,6 @@
 # src/interceptor.py
 import asyncio
+import os
 import re
 import json
 
@@ -13,9 +14,15 @@ from src.utils.data_handler import (
     save_data,
     write_frontend_json,
     upload_to_gcs,
-    load_state,
-    save_state,
+    get_stored_hash,
+    set_stored_hash,
 )
+
+
+def _in_airflow() -> bool:
+    """Airflow sets these in its process env. Used to skip dev-only local writes
+    (timestamped archive + frontend copy) on the VPS, where GCS is the archive."""
+    return bool(os.getenv("AIRFLOW__CORE__EXECUTOR") or os.getenv("AIRFLOW_HOME"))
 
 
 class CMEInterceptor:
@@ -25,6 +32,9 @@ class CMEInterceptor:
         self.base_url = BASE_URL_TEMPLATE.format(pid=self.config["pid"])
         self.raw_json = None
         self.current_target = None
+        # Set True only once a real 0DTE series is selected. Guards against
+        # capturing a far-dated series on off-days and labelling it as 0DTE.
+        self.has_0dte = False
 
     async def handle_response(self, response: Response):
         if "QuikStrikeView.aspx" in response.url and response.request.resource_type in ["xhr", "fetch"]:
@@ -70,7 +80,8 @@ class CMEInterceptor:
         return data
 
     def _expiration_date(self):
-        """0DTE expiration = today's date in US/Central."""
+        """0DTE expiration = today's date in US/Central. Only correct because
+        capture is gated on has_0dte — a non-0DTE series is never persisted."""
         return pendulum.now("America/Chicago").date().isoformat()
 
     def enrich_data(self, data):
@@ -86,14 +97,16 @@ class CMEInterceptor:
     def _persist(self, data):
         """Always write local frontend copy; upload to GCS only when payload changed."""
         data_type = self.current_target
-        save_data(data, data_type)
-        write_frontend_json(data, self.product, data_type)
+        if not _in_airflow():
+            # Dev-only artifacts: timestamped archive + frontend visual copy.
+            # On the Airflow VPS, GCS is the archive — skip to avoid unbounded growth.
+            save_data(data, data_type)
+            write_frontend_json(data, self.product, data_type)
 
-        state = load_state()
         key = f"{self.product}_{data_type}"
         new_hash = payload_hash(data)
 
-        if state.get(key) == new_hash:
+        if get_stored_hash(self.product, data_type) == new_hash:
             print(f"[=] No change for {key} — skipping GCS upload")
             return
 
@@ -105,8 +118,7 @@ class CMEInterceptor:
             return
 
         upload_to_gcs(data, self.product, data_type, GCS_BUCKET)
-        state[key] = new_hash
-        save_state(state)
+        set_stored_hash(self.product, data_type, new_hash)
 
     async def run(self):
         # use_async() hooks every context/page with full stealth: evasion
@@ -128,7 +140,7 @@ class CMEInterceptor:
                 container = page.locator("div[id*='pnlExpirations']")
                 await container.wait_for(state="visible")
                 links = await container.locator("a").all()
-                # Pick the nearest expiry (min DTE). Today's 0DTE series is
+                # Parse DTE from each expiry label. Today's 0DTE series is
                 # labelled "(<1 DTE)" not "(0 DTE)", so parse the value and
                 # treat "<1" as 0 rather than string-matching a literal 0.
                 candidates = []
@@ -140,15 +152,31 @@ class CMEInterceptor:
                     raw = m.group(1).replace(" ", "")
                     dte = 0.0 if raw.startswith("<") else float(raw)
                     candidates.append((dte, link, text.strip()))
-                if candidates:
-                    dte, link, text = min(candidates, key=lambda c: c[0])
+                # Only capture a genuine 0DTE (dte < 1). On off-days/holidays the
+                # nearest series is days out; capturing it would be mislabelled as
+                # today's expiration. No 0DTE → skip capture entirely.
+                zero_dte = [c for c in candidates if c[0] < 1.0]
+                if zero_dte:
+                    dte, link, text = min(zero_dte, key=lambda c: c[0])
                     await link.click(force=True)
-                    print(f"[*] Selected nearest expiry: {text} ({dte} DTE)")
+                    self.has_0dte = True
+                    print(f"[*] Selected 0DTE expiry: {text} ({dte} DTE)")
+                elif candidates:
+                    nearest = min(candidates, key=lambda c: c[0])
+                    print(f"[!] No 0DTE series today (nearest {nearest[2]} = "
+                          f"{nearest[0]} DTE) — skipping capture")
                 else:
                     print("[!] No DTE expirations found in panel")
                 await asyncio.sleep(5)
             except Exception as e:
                 print(f"[!] 0 DTE Error: {e}")
+
+            # Can't confirm a 0DTE series → don't capture. Safe default: never
+            # persist a wrong-expiration payload to bronze.
+            if not self.has_0dte:
+                await browser.close()
+                print(f"[*] Done ({self.product}) — no 0DTE to capture.")
+                return
 
             # 2. Capture Intraday
             print("[2/3] Capturing Intraday Volume...")

@@ -218,3 +218,8 @@ oi/
 # Local prototype archive dirs (save_data)
 /intraday/
 /oi/
+
+# Airflow secrets / env
+secrets/
+.env
+gcp-key.json
