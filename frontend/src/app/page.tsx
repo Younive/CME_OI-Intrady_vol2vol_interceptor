@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styles from './page.module.css';
-import intradayData from '../data/intraday.json';
-import oiData from '../data/oi.json';
+import goldIntradayData from '../data/gold_intraday.json';
+import goldOiData from '../data/gold_oi.json';
+import mnqIntradayData from '../data/mnq_intraday.json';
+import mnqOiData from '../data/mnq_oi.json';
 import {
   Line,
   XAxis,
@@ -37,10 +39,19 @@ interface RawData {
   Subtitle: string;
 }
 
-export default function Home() {
-  const [viewMode, setViewMode] = useState<'intraday' | 'oi'>('intraday');
+const DATA_MAP = {
+  gold: { intraday: goldIntradayData, oi: goldOiData },
+  mnq: { intraday: mnqIntradayData, oi: mnqOiData },
+} as const;
 
-  const data = (viewMode === 'intraday' ? intradayData : oiData) as unknown as RawData;
+export default function Home() {
+  const [product, setProduct] = useState<'gold' | 'mnq'>('gold');
+  const [viewMode, setViewMode] = useState<'intraday' | 'oi'>('intraday');
+  // Recharts ResponsiveContainer measures 0 during SSR → width/height(-1) warning.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  const data = DATA_MAP[product][viewMode] as unknown as RawData;
 
   const chartData = useMemo(() => {
     if (!data || !data.Call || !data.Put) return [];
@@ -111,8 +122,22 @@ export default function Home() {
             <p style={{ color: '#94a3b8', margin: '5px 0 0 0' }}>{data.ValueName}</p>
           </div>
           <div style={{ textAlign: 'right' }}>
+            <div className={styles.toggleContainer} style={{ marginBottom: '10px' }}>
+                <button
+                  className={`${styles.toggleButton} ${product === 'gold' ? styles.active : ''}`}
+                  onClick={() => setProduct('gold')}
+                >
+                  Gold
+                </button>
+                <button
+                  className={`${styles.toggleButton} ${product === 'mnq' ? styles.active : ''}`}
+                  onClick={() => setProduct('mnq')}
+                >
+                  MNQ
+                </button>
+            </div>
             <div className={styles.toggleContainer}>
-                <button 
+                <button
                   className={`${styles.toggleButton} ${viewMode === 'intraday' ? styles.active : ''}`}
                   onClick={() => setViewMode('intraday')}
                 >
@@ -162,65 +187,67 @@ export default function Home() {
           <h2 className={styles.chartTitle}>Total Distribution & Vol Settle</h2>
         </div>
         <div className={styles.chartWrapper}>
+          {mounted && (
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={themeColors.grid} />
-              <XAxis 
-                dataKey="strike" 
+              <XAxis
+                dataKey="strike"
                 type="number"
                 domain={xDomain}
-                stroke={themeColors.text} 
+                stroke={themeColors.text}
                 fontSize={12}
                 tickLine={true}
                 axisLine={true}
               />
-              <YAxis 
+              <YAxis
                 yAxisId="left"
-                stroke={themeColors.text} 
+                stroke={themeColors.text}
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
               />
-              <YAxis 
+              <YAxis
                 yAxisId="right"
                 orientation="right"
-                stroke={themeColors.vol} 
+                stroke={themeColors.vol}
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
                 domain={['auto', 'auto']}
               />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: '#1e293b', 
-                  border: '1px solid #334155', 
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#1e293b',
+                  border: '1px solid #334155',
                   borderRadius: '8px',
-                  color: '#fff' 
+                  color: '#fff'
                 }}
                 itemStyle={{ color: '#fff' }}
                 cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }}
               />
               <Legend verticalAlign="top" height={36}/>
-              
-              <ReferenceLine 
-                x={data.FuturePrice} 
-                yAxisId="left" 
-                stroke={themeColors.future} 
+
+              <ReferenceLine
+                x={data.FuturePrice}
+                yAxisId="left"
+                stroke={themeColors.future}
                 strokeWidth={3}
-                strokeDasharray="8 4" 
-                label={{ 
-                  value: `${data.FuturePrice}`, 
+                strokeDasharray="8 4"
+                label={{
+                  value: `${data.FuturePrice}`,
                   position: 'insideTopLeft',
-                  fill: themeColors.future, 
+                  fill: themeColors.future,
                   fontSize: 16,
                   fontWeight: 'bold'
-                }} 
+                }}
               />
 
               <Bar yAxisId="left" dataKey="total" fill={themeColors.total} radius={[4, 4, 0, 0]} name={viewMode === 'intraday' ? 'Total Volume' : 'Total OI'} barSize={15} />
               <Line yAxisId="right" type="monotone" dataKey="volSettle" stroke={themeColors.vol} dot={false} strokeWidth={2} name="Vol Settle %" />
             </ComposedChart>
           </ResponsiveContainer>
+          )}
         </div>
       </section>
 
@@ -229,59 +256,60 @@ export default function Home() {
           <h2 className={styles.chartTitle}>Call/Put Breakdown & Vol Settle</h2>
         </div>
         <div className={styles.chartWrapper}>
+          {mounted && (
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={themeColors.grid} />
-              <XAxis 
-                dataKey="strike" 
+              <XAxis
+                dataKey="strike"
                 type="number"
                 domain={xDomain}
-                stroke={themeColors.text} 
+                stroke={themeColors.text}
                 fontSize={12}
                 tickLine={true}
                 axisLine={true}
               />
-              <YAxis 
+              <YAxis
                 yAxisId="left"
-                stroke={themeColors.text} 
+                stroke={themeColors.text}
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
               />
-              <YAxis 
+              <YAxis
                 yAxisId="right"
                 orientation="right"
-                stroke={themeColors.vol} 
+                stroke={themeColors.vol}
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
                 domain={['auto', 'auto']}
               />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: '#1e293b', 
-                  border: '1px solid #334155', 
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#1e293b',
+                  border: '1px solid #334155',
                   borderRadius: '8px',
-                  color: '#fff' 
+                  color: '#fff'
                 }}
                 itemStyle={{ color: '#fff' }}
                 cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }}
               />
               <Legend verticalAlign="top" height={36} wrapperStyle={{ paddingBottom: '20px' }} />
-              
-              <ReferenceLine 
-                x={data.FuturePrice} 
-                yAxisId="left" 
-                stroke={themeColors.future} 
+
+              <ReferenceLine
+                x={data.FuturePrice}
+                yAxisId="left"
+                stroke={themeColors.future}
                 strokeWidth={3}
-                strokeDasharray="8 4" 
-                label={{ 
-                  value: `${data.FuturePrice}`, 
+                strokeDasharray="8 4"
+                label={{
+                  value: `${data.FuturePrice}`,
                   position: 'insideTopLeft',
-                  fill: themeColors.future, 
+                  fill: themeColors.future,
                   fontSize: 16,
                   fontWeight: 'bold'
-                }} 
+                }}
               />
 
               <Bar yAxisId="left" dataKey="call" fill={themeColors.call} radius={[4, 4, 0, 0]} name="Calls" barSize={10} />
@@ -289,6 +317,7 @@ export default function Home() {
               <Line yAxisId="right" type="monotone" dataKey="volSettle" stroke={themeColors.vol} dot={false} strokeWidth={2} name="Vol Settle %" />
             </ComposedChart>
           </ResponsiveContainer>
+          )}
         </div>
       </section>
 
