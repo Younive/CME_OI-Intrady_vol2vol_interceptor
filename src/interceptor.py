@@ -35,6 +35,7 @@ class CMEInterceptor:
         # Set True only once a real 0DTE series is selected. Guards against
         # capturing a far-dated series on off-days and labelling it as 0DTE.
         self.has_0dte = False
+        self.expiration_date = None  # ISO date of the selected series (panel truth)
 
     async def handle_response(self, response: Response):
         if "QuikStrikeView.aspx" in response.url and response.request.resource_type in ["xhr", "fetch"]:
@@ -80,9 +81,9 @@ class CMEInterceptor:
         return data
 
     def _expiration_date(self):
-        """0DTE expiration = today's date in US/Central. Only correct because
-        capture is gated on has_0dte — a non-0DTE series is never persisted."""
-        return pendulum.now("America/Chicago").date().isoformat()
+        """Date parsed from the selected series' panel label — ground truth.
+        Only set once a genuine 0DTE series is selected (has_0dte gate)."""
+        return self.expiration_date
 
     def enrich_data(self, data):
         """Adds product/data_type/expiration_date + extracted subtitle fields."""
@@ -140,29 +141,39 @@ class CMEInterceptor:
                 container = page.locator("div[id*='pnlExpirations']")
                 await container.wait_for(state="visible")
                 links = await container.locator("a").all()
-                # Parse DTE from each expiry label. Today's 0DTE series is
-                # labelled "(<1 DTE)" not "(0 DTE)", so parse the value and
-                # treat "<1" as 0 rather than string-matching a literal 0.
+                # Panel labels are "CODE\nDD Mon YYYY" (older layout used
+                # "(<1 DTE)" — kept as fallback). 0DTE = expiry equals the
+                # current TRADING date: CT date, rolled to the next day from
+                # 17:00 CT (Globex reopens 18:00 for the next session).
+                ct = pendulum.now("America/Chicago")
+                trading_date = ct.date().add(days=1) if ct.hour >= 17 else ct.date()
                 candidates = []
                 for link in links:
                     text = await link.inner_text()
                     m = re.search(r'\(\s*(<?\s*[\d.]+)\s*DTE\)', text)
-                    if not m:
+                    d = re.search(r'(\d{1,2}\s+[A-Za-z]{3}\s+\d{4})', text)
+                    if m:
+                        raw = m.group(1).replace(" ", "")
+                        dte = 0.0 if raw.startswith("<") else float(raw)
+                        exp = trading_date.add(days=int(dte))
+                    elif d:
+                        exp = pendulum.from_format(d.group(1), "DD MMM YYYY").date()
+                        dte = float((exp - trading_date).days)
+                    else:
                         continue
-                    raw = m.group(1).replace(" ", "")
-                    dte = 0.0 if raw.startswith("<") else float(raw)
-                    candidates.append((dte, link, text.strip()))
-                # Only capture a genuine 0DTE (dte < 1). On off-days/holidays the
+                    candidates.append((dte, link, " ".join(text.split()), exp))
+                # Only capture a genuine 0DTE (dte == 0). On off-days/holidays the
                 # nearest series is days out; capturing it would be mislabelled as
                 # today's expiration. No 0DTE → skip capture entirely.
-                zero_dte = [c for c in candidates if c[0] < 1.0]
+                zero_dte = [c for c in candidates if 0.0 <= c[0] < 1.0]
                 if zero_dte:
-                    dte, link, text = min(zero_dte, key=lambda c: c[0])
+                    dte, link, text, exp = min(zero_dte, key=lambda c: c[0])
                     await link.click(force=True)
                     self.has_0dte = True
+                    self.expiration_date = exp.isoformat()
                     print(f"[*] Selected 0DTE expiry: {text} ({dte} DTE)")
                 elif candidates:
-                    nearest = min(candidates, key=lambda c: c[0])
+                    nearest = min(candidates, key=lambda c: abs(c[0]))
                     print(f"[!] No 0DTE series today (nearest {nearest[2]} = "
                           f"{nearest[0]} DTE) — skipping capture")
                 else:
