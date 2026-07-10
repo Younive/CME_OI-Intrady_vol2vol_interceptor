@@ -17,10 +17,10 @@ PRODUCTS = {
 
 DATA_TYPES = ["intraday", "oi"]
 
-GCS_BUCKET = os.getenv("GCS_BUCKET", "vol2vol-bronze-prod")  # update after Terraform apply
+GCS_BUCKET = os.getenv("GCS_BUCKET", "oi-intraday-bucket")
 GCS_BASE_PATH = "raw"
 
-# Local dev: off (visual-only). VPS/Airflow: set GCS_ENABLED=true in .env.
+# Local dev: off (visual-only). Cloud Run: set GCS_ENABLED=true.
 GCS_ENABLED = os.getenv("GCS_ENABLED", "false").lower() == "true"
 
 # QuikStrike view URL — pid is substituted per product.

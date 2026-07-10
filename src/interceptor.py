@@ -19,10 +19,11 @@ from src.utils.data_handler import (
 )
 
 
-def _in_airflow() -> bool:
-    """Airflow sets these in its process env. Used to skip dev-only local writes
-    (timestamped archive + frontend copy) on the VPS, where GCS is the archive."""
-    return bool(os.getenv("AIRFLOW__CORE__EXECUTOR") or os.getenv("AIRFLOW_HOME"))
+def _in_cloud() -> bool:
+    """Cloud Run sets K_SERVICE. Used to skip dev-only local writes
+    (timestamped archive + frontend copy) in the cloud, where GCS is the archive
+    and the container filesystem is ephemeral."""
+    return bool(os.getenv("K_SERVICE"))
 
 
 class CMEInterceptor:
@@ -98,9 +99,9 @@ class CMEInterceptor:
     def _persist(self, data):
         """Always write local frontend copy; upload to GCS only when payload changed."""
         data_type = self.current_target
-        if not _in_airflow():
+        if not _in_cloud():
             # Dev-only artifacts: timestamped archive + frontend visual copy.
-            # On the Airflow VPS, GCS is the archive — skip to avoid unbounded growth.
+            # On Cloud Run, GCS is the archive — skip (filesystem is ephemeral).
             save_data(data, data_type)
             write_frontend_json(data, self.product, data_type)
 
