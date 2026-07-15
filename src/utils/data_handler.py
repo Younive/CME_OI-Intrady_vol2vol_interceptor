@@ -92,12 +92,44 @@ def get_stored_hash(product, data_type):
     return load_state().get(f"{product}_{data_type}", "")
 
 
-def set_stored_hash(product, data_type, value):
-    # ponytail: read-modify-write whole state per call (~4 keys). Fine at 5-min
-    # cadence; batch into one write if run frequency ever spikes.
-    state = load_state()
-    state[f"{product}_{data_type}"] = value
-    save_state(state)
+def set_stored_hash(product, data_type, value, base_dir="."):
+    key = f"{product}_{data_type}"
+    if GCS_ENABLED:
+        _cas_set_state(key, value)
+        return
+    # Local (single machine): plain read-modify-write is safe.
+    state = load_state(base_dir)
+    state[key] = value
+    save_state(state, base_dir)
+
+
+def _cas_set_state(key, value, attempts=5):
+    """Atomic per-key update of the shared GCS state blob. Overlapping Cloud Run
+    invocations (e.g. the 22:00 UTC double-fire) each read-modify-write the whole
+    object, so a plain write loses the other's key. Pin read+write to one blob
+    generation with if_generation_match; on a concurrent write (412) reload and
+    retry. gen 0 = "only if absent" for first-write creation."""
+    from google.api_core.exceptions import NotFound, PreconditionFailed
+
+    for _ in range(attempts):
+        blob = _state_blob()
+        try:
+            blob.reload()
+            gen = blob.generation
+            state = json.loads(blob.download_as_text(if_generation_match=gen))
+        except NotFound:
+            gen, state = 0, {}
+        state[key] = value
+        try:
+            blob.upload_from_string(
+                json.dumps(state, indent=2),
+                content_type="application/json",
+                if_generation_match=gen,
+            )
+            return
+        except PreconditionFailed:
+            continue  # someone else wrote between our read and write — retry
+    raise RuntimeError(f"state CAS for {key} lost after {attempts} attempts")
 
 
 if __name__ == "__main__":

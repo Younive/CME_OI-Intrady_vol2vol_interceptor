@@ -48,6 +48,10 @@ export default function Home() {
     return () => clearInterval(t);
   }, []);
 
+  // ICT day string; flips at rollover (recomputed as `now` ticks). Primitive
+  // dep so the session-open effect re-runs once per new day, not per render.
+  const today = todayICT();
+
   // Latest paths held, in refs so the poll loop reads fresh values without
   // re-subscribing every fetch.
   const intradayPath = useRef('');
@@ -72,8 +76,11 @@ export default function Home() {
         if (cancelled) return;
         if (d.error) { setErr(d.error); return; }
         setErr('');
-        if (d.intraday) setIntraday(d.intraday);
-        if (d.oi) setOi(d.oi);
+        // 'empty' = no snapshot today → clear; 'unchanged' = keep; object = set.
+        if (d.intraday === 'empty') setIntraday(null);
+        else if (d.intraday && d.intraday !== 'unchanged') setIntraday(d.intraday);
+        if (d.oi === 'empty') setOi(null);
+        else if (d.oi && d.oi !== 'unchanged') setOi(d.oi);
       } catch (e) {
         if (!cancelled) setErr(String(e));
       } finally {
@@ -98,12 +105,12 @@ export default function Home() {
   useEffect(() => {
     let cancelled = false;
     setOpen(null);
-    fetch(`/api/open?product=${product}&date=${todayICT()}`)
+    fetch(`/api/open?product=${product}&date=${today}`)
       .then((r) => r.json())
       .then((d) => { if (!cancelled && d && !d.error) setOpen(d.open); })
       .catch(() => {});
     return () => { cancelled = true; };
-  }, [product]);
+  }, [product, today]);
 
   const btn = (active: boolean) => `${styles.toggleButton} ${active ? styles.active : ''}`;
   // Freshest capture across both data types, for the header badge.

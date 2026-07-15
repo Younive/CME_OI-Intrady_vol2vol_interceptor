@@ -42,7 +42,8 @@ if __name__ == "__main__":
     import sys
 
     if len(sys.argv) > 1 and sys.argv[1] == "check":
-        mk = lambda dow, hour: pendulum.datetime(2026, 7, 6, hour, tz="America/Chicago").add(days=dow)
+        def mk(dow, hour):
+            return pendulum.datetime(2026, 7, 6, hour, tz="America/Chicago").add(days=dow)
         # 2026-07-06 is a Monday (weekday 0).
         assert not _market_closed(mk(0, 12))   # Mon midday — open
         assert not _market_closed(mk(4, 12))   # Fri 12:00 — open

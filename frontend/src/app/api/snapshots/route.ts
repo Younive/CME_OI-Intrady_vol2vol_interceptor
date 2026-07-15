@@ -33,6 +33,7 @@ export async function GET(req: NextRequest) {
     ]);
     return NextResponse.json({ intraday, oi });
   } catch (e) {
-    return NextResponse.json({ error: String(e) }, { status: 500 });
+    console.error('api/snapshots', e); // detail server-side only
+    return NextResponse.json({ error: 'internal error' }, { status: 500 });
   }
 }

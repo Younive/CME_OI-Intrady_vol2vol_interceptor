@@ -49,6 +49,7 @@ export async function GET(req: NextRequest) {
   try {
     return NextResponse.json(await nearestSnap(product, atSec, have));
   } catch (e) {
-    return NextResponse.json({ error: String(e) }, { status: 500 });
+    console.error('api/sd', e); // detail server-side only
+    return NextResponse.json({ error: 'internal error' }, { status: 500 });
   }
 }
