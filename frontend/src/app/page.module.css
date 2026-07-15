@@ -84,21 +84,90 @@
 }
 
 .chartSection {
-  margin-bottom: 3rem;
+  margin-bottom: 0;
   width: 100%;
+}
+
+/* SD-range cards */
+.rangeHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.dteToggle {
+  display: inline-flex;
+  gap: 2px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 2px;
+  border-radius: 6px;
+}
+
+.dteBtn {
+  padding: 2px 8px;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 4px;
+}
+
+.dteBtn.dteActive {
+  background: var(--accent);
+  color: #fff;
+}
+
+.rangeRows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-top: 0.4rem;
+}
+
+.rangeRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.rangeLevel {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.rangeVal {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #f1f5f9;
 }
 
 .chartHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin: 0.5rem 0 1.25rem;
+  padding: 0 0.5rem;
 }
 
 .chartTitle {
   font-size: 1.1rem;
   font-weight: 600;
   color: #cbd5e1;
+  padding: 0.25rem 0;
+}
+
+.sectionTitle {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 2rem 0 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
 }
 
 .chartWrapper {
@@ -106,7 +175,7 @@
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  height: 500px;
+  height: 360px;
   width: 100%;
   box-sizing: border-box;
   overflow: hidden;

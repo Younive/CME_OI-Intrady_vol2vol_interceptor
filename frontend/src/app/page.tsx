@@ -1,328 +1,200 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import styles from './page.module.css';
-import goldIntradayData from '../data/gold_intraday.json';
-import goldOiData from '../data/gold_oi.json';
-import mnqIntradayData from '../data/mnq_intraday.json';
-import mnqOiData from '../data/mnq_oi.json';
-import {
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  ReferenceLine,
-  ComposedChart,
-  Bar
-} from 'recharts';
+import DistributionCharts from '@/components/DistributionCharts';
+import MetaGrid, { DteSel } from '@/components/MetaGrid';
+import { fmtICT, todayICT, PRODUCTS, Product, Snapshot } from '@/lib/backtest';
 
-interface DataPoint {
-  x: number;
-  y: number;
+interface DirLatest {
+  snap: Snapshot;
+  path: string;
 }
 
-interface RawData {
-  ValueName: string;
-  Call: { data: DataPoint[] };
-  Put: { data: DataPoint[] };
-  VolSettle: { data: DataPoint[] };
-  FuturePrice: number;
-  ExtractedFutureChg?: number;
-  ExtractedVol?: number;
-  ExtractedVolChg?: number;
-  ATMVol: number;
-  ExtractedAt: string;
-  Title: string;
-  Subtitle: string;
-}
+const POLL_MS = 60_000;
+const DAY_MS = 86_400_000;
 
-const DATA_MAP = {
-  gold: { intraday: goldIntradayData, oi: goldOiData },
-  mnq: { intraday: mnqIntradayData, oi: mnqOiData },
-} as const;
+// Epoch ms -> "HH-MM-SS" ICT, matching zero-padded blob basenames.
+const toICTHMS = (ms: number) => fmtICT(new Date(ms).toISOString()).replace(/:/g, '-');
+
+// "3m ago" style relative label from an ISO timestamp.
+const ago = (iso: string, now: number) => {
+  const s = Math.max(0, Math.round((now - new Date(iso).getTime()) / 1000));
+  if (s < 60) return `${s}s ago`;
+  const m = Math.round(s / 60);
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  return `${h}h ${m % 60}m ago`;
+};
 
 export default function Home() {
-  const [product, setProduct] = useState<'gold' | 'mnq'>('gold');
-  const [viewMode, setViewMode] = useState<'intraday' | 'oi'>('intraday');
-  // Recharts ResponsiveContainer measures 0 during SSR → width/height(-1) warning.
+  const [product, setProduct] = useState<Product>('gold');
+  const [intraday, setIntraday] = useState<DirLatest | null>(null);
+  const [oi, setOi] = useState<DirLatest | null>(null);
+  const [open, setOpen] = useState<number | null>(null);
+  const [dteSel, setDteSel] = useState<DteSel>(0.7);
+  const [sd, setSd] = useState<DirLatest | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState('');
   const [mounted, setMounted] = useState(false);
+  const [now, setNow] = useState(() => Date.now());
+
   useEffect(() => setMounted(true), []);
 
-  const data = DATA_MAP[product][viewMode] as unknown as RawData;
+  // Ticking clock drives the relative "ago" badge.
+  useEffect(() => {
+    const t = setInterval(() => setNow(Date.now()), 30_000);
+    return () => clearInterval(t);
+  }, []);
 
-  const chartData = useMemo(() => {
-    if (!data || !data.Call || !data.Put) return [];
+  // ICT day string; flips at rollover (recomputed as `now` ticks). Primitive
+  // dep so the session-open effect re-runs once per new day, not per render.
+  const today = todayICT();
 
-    const strikesMap = new Map<number, { strike: number; call: number; put: number; total: number; volSettle: number | null }>();
+  // Latest paths held, in refs so the poll loop reads fresh values without
+  // re-subscribing every fetch.
+  const intradayPath = useRef('');
+  const oiPath = useRef('');
+  intradayPath.current = intraday?.path ?? '';
+  oiPath.current = oi?.path ?? '';
 
-    data.Call.data.forEach((p) => {
-      strikesMap.set(p.x, { strike: p.x, call: p.y, put: 0, total: p.y, volSettle: null });
-    });
+  useEffect(() => {
+    let cancelled = false;
 
-    data.Put.data.forEach((p) => {
-      const existing = strikesMap.get(p.x);
-      if (existing) {
-        existing.put = p.y;
-        existing.total += p.y;
-      } else {
-        strikesMap.set(p.x, { strike: p.x, call: 0, put: p.y, total: p.y, volSettle: null });
+    const pull = async (initial: boolean) => {
+      // Skip background polls while tab is hidden.
+      if (!initial && document.visibilityState !== 'visible') return;
+      const q = new URLSearchParams({ product });
+      if (!initial) {
+        if (intradayPath.current) q.set('intradayHave', intradayPath.current);
+        if (oiPath.current) q.set('oiHave', oiPath.current);
       }
-    });
+      try {
+        const r = await fetch(`/api/latest?${q}`);
+        const d = await r.json();
+        if (cancelled) return;
+        if (d.error) { setErr(d.error); return; }
+        setErr('');
+        // 'empty' = no snapshot today → clear; 'unchanged' = keep; object = set.
+        if (d.intraday === 'empty') setIntraday(null);
+        else if (d.intraday && d.intraday !== 'unchanged') setIntraday(d.intraday);
+        if (d.oi === 'empty') setOi(null);
+        else if (d.oi && d.oi !== 'unchanged') setOi(d.oi);
+      } catch (e) {
+        if (!cancelled) setErr(String(e));
+      } finally {
+        if (initial && !cancelled) setLoading(false);
+      }
+    };
 
-    if (data.VolSettle && data.VolSettle.data) {
-      data.VolSettle.data.forEach((p) => {
-        const existing = strikesMap.get(p.x);
-        if (existing) {
-          existing.volSettle = p.y * 100;
-        } else {
-          strikesMap.set(p.x, { strike: p.x, call: 0, put: 0, total: 0, volSettle: p.y * 100 });
-        }
-      });
-    }
+    // Reset on product change, then load fresh.
+    setIntraday(null);
+    setOi(null);
+    setSd(null);
+    setLoading(true);
+    intradayPath.current = '';
+    oiPath.current = '';
+    pull(true);
 
-    return Array.from(strikesMap.values())
-      .filter(d => d.total > 0 || d.volSettle !== null)
-      .sort((a, b) => a.strike - b.strike);
-  }, [data]);
+    const t = setInterval(() => pull(false), POLL_MS);
+    return () => { cancelled = true; clearInterval(t); };
+  }, [product]);
 
-  const themeColors = {
-    total: "#818cf8",
-    call: "#38bdf8",
-    put: "#fb923c",
-    vol: "#f43f5e",
-    future: "#facc15",
-    grid: "#334155",
-    text: "#94a3b8"
-  };
+  // Session open (Yahoo, once per product/day).
+  useEffect(() => {
+    let cancelled = false;
+    setOpen(null);
+    fetch(`/api/open?product=${product}&date=${today}`)
+      .then((r) => r.json())
+      .then((d) => { if (!cancelled && d && !d.error) setOpen(d.open); })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [product, today]);
 
-  const formatPriceChange = (val?: number) => {
-    if (val === null || val === undefined) return '-';
-    const sign = val >= 0 ? '+' : '';
-    return `${sign}${val}`;
-  };
+  const btn = (active: boolean) => `${styles.toggleButton} ${active ? styles.active : ''}`;
+  // Freshest capture across both data types, for the header badge.
+  const snaps = [intraday?.snap, oi?.snap].filter((s): s is Snapshot => !!s);
+  const freshest = snaps.length
+    ? snaps.reduce((a, b) => (a.ExtractedAt > b.ExtractedAt ? a : b))
+    : null;
+  const hasData = !!(intraday || oi);
 
-  const xDomain = useMemo(() => {
-    if (chartData.length === 0) return [0, 0];
-    const strikes = chartData.map(d => d.strike);
-    const min = Math.min(...strikes, data.FuturePrice);
-    const max = Math.max(...strikes, data.FuturePrice);
-    const padding = (max - min) * 0.05;
-    return [min - padding, max + padding];
-  }, [chartData, data.FuturePrice]);
+  // SD-range snapshot: the one captured when DTE crossed the selected 0.6/0.7.
+  // Expiry is fixed for the day (ExtractedAt + DTE·day is constant across
+  // captures), so the target time is stable; `have` keeps refetches cheap.
+  const sdPath = useRef('');
+  sdPath.current = sd?.path ?? '';
+  const freshISO = freshest?.ExtractedAt;
+  const freshDTE = freshest?.DTE;
+  useEffect(() => {
+    if (!freshISO || freshDTE == null) return;
+    let cancelled = false;
+    const expiry = new Date(freshISO).getTime() + freshDTE * DAY_MS;
+    const at = toICTHMS(expiry - dteSel * DAY_MS);
+    const q = new URLSearchParams({ product, at });
+    if (sdPath.current) q.set('have', sdPath.current);
+    fetch(`/api/sd?${q}`)
+      .then((r) => r.json())
+      .then((d) => { if (!cancelled && d && !d.error) setSd(d); })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [product, dteSel, freshISO, freshDTE]);
 
   return (
     <main className={styles.main}>
       <header className={styles.header}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
-            <h1 className={styles.title}>{data.Title || 'CME Vol2Vol Dashboard'}</h1>
-            <p style={{ color: '#94a3b8', margin: '5px 0 0 0' }}>{data.ValueName}</p>
+            <h1 className={styles.title}>{freshest?.Title || 'CME Vol2Vol Dashboard'}</h1>
+            <p style={{ color: '#94a3b8', margin: '5px 0 0 0' }}>Live — newest scraped snapshot</p>
           </div>
           <div style={{ textAlign: 'right' }}>
             <div className={styles.toggleContainer} style={{ marginBottom: '10px' }}>
-                <button
-                  className={`${styles.toggleButton} ${product === 'gold' ? styles.active : ''}`}
-                  onClick={() => setProduct('gold')}
-                >
-                  Gold
+              {PRODUCTS.map((p) => (
+                <button key={p} className={btn(product === p)} onClick={() => setProduct(p)}>
+                  {p.toUpperCase()}
                 </button>
-                <button
-                  className={`${styles.toggleButton} ${product === 'mnq' ? styles.active : ''}`}
-                  onClick={() => setProduct('mnq')}
-                >
-                  MNQ
-                </button>
-            </div>
-            <div className={styles.toggleContainer}>
-                <button
-                  className={`${styles.toggleButton} ${viewMode === 'intraday' ? styles.active : ''}`}
-                  onClick={() => setViewMode('intraday')}
-                >
-                  Intraday Volume
-                </button>
-                <button 
-                  className={`${styles.toggleButton} ${viewMode === 'oi' ? styles.active : ''}`}
-                  onClick={() => setViewMode('oi')}
-                >
-                  Open Interest
-                </button>
+              ))}
             </div>
             <span style={{ color: '#64748b', fontSize: '0.8rem', display: 'block', marginTop: '10px' }}>
-                Last Updated: {data.ExtractedAt}
+              {freshest
+                ? <>🟢 Last capture {fmtICT(freshest.ExtractedAt)} ICT · {ago(freshest.ExtractedAt, now)}</>
+                : 'No live snapshot'}
             </span>
-          </div>
-        </div>
-        
-        <div className={styles.metaGrid}>
-          <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>Future Price</span>
-            <span className={styles.metaValue}>${data.FuturePrice}</span>
-            <span style={{ color: (data.ExtractedFutureChg || 0) >= 0 ? '#22c55e' : '#ef4444', fontSize: '0.8rem', fontWeight: 'bold' }}>
-              ({formatPriceChange(data.ExtractedFutureChg)})
-            </span>
-          </div>
-          <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>Implied Vol (Vol)</span>
-            <span className={styles.metaValue}>{data.ExtractedVol}%</span>
-            <span style={{ color: (data.ExtractedVolChg || 0) >= 0 ? '#22c55e' : '#ef4444', fontSize: '0.8rem', fontWeight: 'bold' }}>
-              ({formatPriceChange(data.ExtractedVolChg)})
-            </span>
-          </div>
-          <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>ATM Vol</span>
-            <span className={styles.metaValue}>{(data.ATMVol * 100).toFixed(2)}%</span>
-          </div>
-          <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>Data Points</span>
-            <span className={styles.metaValue}>{chartData.length} Strikes</span>
           </div>
         </div>
       </header>
 
-      <section className={styles.chartSection}>
-        <div className={styles.chartHeader}>
-          <h2 className={styles.chartTitle}>Total Distribution & Vol Settle</h2>
-        </div>
-        <div className={styles.chartWrapper}>
-          {mounted && (
-          <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={themeColors.grid} />
-              <XAxis
-                dataKey="strike"
-                type="number"
-                domain={xDomain}
-                stroke={themeColors.text}
-                fontSize={12}
-                tickLine={true}
-                axisLine={true}
-              />
-              <YAxis
-                yAxisId="left"
-                stroke={themeColors.text}
-                fontSize={12}
-                tickLine={false}
-                axisLine={false}
-              />
-              <YAxis
-                yAxisId="right"
-                orientation="right"
-                stroke={themeColors.vol}
-                fontSize={12}
-                tickLine={false}
-                axisLine={false}
-                domain={['auto', 'auto']}
-              />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: '#1e293b',
-                  border: '1px solid #334155',
-                  borderRadius: '8px',
-                  color: '#fff'
-                }}
-                itemStyle={{ color: '#fff' }}
-                cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }}
-              />
-              <Legend verticalAlign="top" height={36}/>
+      {loading && <p style={{ color: '#94a3b8' }}>Loading…</p>}
+      {err && <p style={{ color: '#ef4444' }}>Error: {err}</p>}
+      {!loading && !err && !hasData && (
+        <p style={{ color: '#94a3b8' }}>
+          No data yet today (ICT) for {product.toUpperCase()} — market may be closed.
+          {' '}Browse past days in <Link href="/backtest" style={{ color: 'var(--accent)' }}>Backtest Replay</Link>.
+        </p>
+      )}
 
-              <ReferenceLine
-                x={data.FuturePrice}
-                yAxisId="left"
-                stroke={themeColors.future}
-                strokeWidth={3}
-                strokeDasharray="8 4"
-                label={{
-                  value: `${data.FuturePrice}`,
-                  position: 'insideTopLeft',
-                  fill: themeColors.future,
-                  fontSize: 16,
-                  fontWeight: 'bold'
-                }}
-              />
+      {hasData && freshest && (
+        <MetaGrid data={freshest} open={open} sdSnap={sd?.snap ?? null} dteSel={dteSel} onDteSel={setDteSel} />
+      )}
 
-              <Bar yAxisId="left" dataKey="total" fill={themeColors.total} radius={[4, 4, 0, 0]} name={viewMode === 'intraday' ? 'Total Volume' : 'Total OI'} barSize={15} />
-              <Line yAxisId="right" type="monotone" dataKey="volSettle" stroke={themeColors.vol} dot={false} strokeWidth={2} name="Vol Settle %" />
-            </ComposedChart>
-          </ResponsiveContainer>
-          )}
-        </div>
-      </section>
+      {hasData && (
+        <>
+          <h2 className={styles.sectionTitle}>Intraday Volume</h2>
+          {intraday
+            ? <DistributionCharts data={intraday.snap} viewMode="intraday" mounted={mounted} />
+            : <p style={{ color: '#94a3b8' }}>No intraday snapshot yet today.</p>}
 
-      <section className={styles.chartSection}>
-        <div className={styles.chartHeader}>
-          <h2 className={styles.chartTitle}>Call/Put Breakdown & Vol Settle</h2>
-        </div>
-        <div className={styles.chartWrapper}>
-          {mounted && (
-          <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={themeColors.grid} />
-              <XAxis
-                dataKey="strike"
-                type="number"
-                domain={xDomain}
-                stroke={themeColors.text}
-                fontSize={12}
-                tickLine={true}
-                axisLine={true}
-              />
-              <YAxis
-                yAxisId="left"
-                stroke={themeColors.text}
-                fontSize={12}
-                tickLine={false}
-                axisLine={false}
-              />
-              <YAxis
-                yAxisId="right"
-                orientation="right"
-                stroke={themeColors.vol}
-                fontSize={12}
-                tickLine={false}
-                axisLine={false}
-                domain={['auto', 'auto']}
-              />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: '#1e293b',
-                  border: '1px solid #334155',
-                  borderRadius: '8px',
-                  color: '#fff'
-                }}
-                itemStyle={{ color: '#fff' }}
-                cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }}
-              />
-              <Legend verticalAlign="top" height={36} wrapperStyle={{ paddingBottom: '20px' }} />
-
-              <ReferenceLine
-                x={data.FuturePrice}
-                yAxisId="left"
-                stroke={themeColors.future}
-                strokeWidth={3}
-                strokeDasharray="8 4"
-                label={{
-                  value: `${data.FuturePrice}`,
-                  position: 'insideTopLeft',
-                  fill: themeColors.future,
-                  fontSize: 16,
-                  fontWeight: 'bold'
-                }}
-              />
-
-              <Bar yAxisId="left" dataKey="call" fill={themeColors.call} radius={[4, 4, 0, 0]} name="Calls" barSize={10} />
-              <Bar yAxisId="left" dataKey="put" fill={themeColors.put} radius={[4, 4, 0, 0]} name="Puts" barSize={10} />
-              <Line yAxisId="right" type="monotone" dataKey="volSettle" stroke={themeColors.vol} dot={false} strokeWidth={2} name="Vol Settle %" />
-            </ComposedChart>
-          </ResponsiveContainer>
-          )}
-        </div>
-      </section>
+          <h2 className={styles.sectionTitle}>Open Interest</h2>
+          {oi
+            ? <DistributionCharts data={oi.snap} viewMode="oi" mounted={mounted} />
+            : <p style={{ color: '#94a3b8' }}>No OI snapshot yet today.</p>}
+        </>
+      )}
 
       <footer className={styles.footer}>
-        <p>CME QuikStrike Data Interceptor Prototype</p>
+        <p>CME QuikStrike Data Interceptor — Live</p>
       </footer>
     </main>
   );

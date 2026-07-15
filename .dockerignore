@@ -1,0 +1,11 @@
+.git
+secrets/
+frontend/
+intraday/
+oi/
+.interceptor_state.json
+__pycache__/
+*.pyc
+.venv/
+context/
+*.md

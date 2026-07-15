@@ -1,5 +1,6 @@
 # src/config.py
 """Product definitions and GCS config for the interceptor."""
+import os
 
 PRODUCTS = {
     "gold": {
@@ -12,15 +13,20 @@ PRODUCTS = {
         "quikstrike_name": "Micro E-mini Nasdaq-100",
         "gcs_prefix": "mnq",
     },
+    "mes": {
+        "pid": 135,
+        "quikstrike_name": "Micro E-mini S&P 500",
+        "gcs_prefix": "mes",
+    },
 }
 
 DATA_TYPES = ["intraday", "oi"]
 
-GCS_BUCKET = "vol2vol-bronze-prod"  # update after Terraform apply
+GCS_BUCKET = os.getenv("GCS_BUCKET", "oi-intraday-bucket")
 GCS_BASE_PATH = "raw"
 
-# Set to False to run without touching GCS (local-only visual verification).
-GCS_ENABLED = False
+# Local dev: off (visual-only). Cloud Run: set GCS_ENABLED=true.
+GCS_ENABLED = os.getenv("GCS_ENABLED", "false").lower() == "true"
 
 # QuikStrike view URL — pid is substituted per product.
 BASE_URL_TEMPLATE = (

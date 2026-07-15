@@ -214,7 +214,15 @@ features.md
 
 intraday/
 oi/
+memory.md
 
 # Local prototype archive dirs (save_data)
 /intraday/
 /oi/
+
+# Airflow secrets / env
+secrets/
+.env
+gcp-key.json
+
+.playwright-mcp/
