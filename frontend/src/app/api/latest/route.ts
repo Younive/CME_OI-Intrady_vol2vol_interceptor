@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Storage } from '@google-cloud/storage';
 import { dayPrefix, todayICT, PRODUCTS, Snapshot } from '@/lib/backtest';
-
-// Local dev: `gcloud auth application-default login`. Vercel: reader SA creds.
-const storage = new Storage();
-const BUCKET = process.env.GCS_BUCKET || 'oi-intraday-bucket';
+import { storage, BUCKET } from '@/lib/gcs';
 
 // Newest snapshot for today's ICT dir. Blob names are zero-padded `HH-MM-SS.json`
 // so lexical max = latest. `have` = path the client already holds; if unchanged

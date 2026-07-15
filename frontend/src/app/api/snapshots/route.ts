@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Storage } from '@google-cloud/storage';
 import { dayPrefix, PRODUCTS, Snapshot } from '@/lib/backtest';
-
-// Local dev: `gcloud auth application-default login`. Vercel: reader SA creds.
-const storage = new Storage();
-const BUCKET = process.env.GCS_BUCKET || 'oi-intraday-bucket';
+import { storage, BUCKET } from '@/lib/gcs';
 
 async function loadDir(product: string, date: string, dir: 'OI' | 'Intraday'): Promise<Snapshot[]> {
   const [files] = await storage.bucket(BUCKET).getFiles({ prefix: dayPrefix(product, date, dir) });
