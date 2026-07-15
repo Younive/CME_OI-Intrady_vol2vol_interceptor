@@ -3,6 +3,8 @@ import json
 import os
 from datetime import datetime, timezone
 
+import pendulum
+
 from src.config import GCS_ENABLED, GCS_BUCKET
 
 STATE_FILE = ".interceptor_state.json"
@@ -36,8 +38,8 @@ def write_frontend_json(data, product, data_type, base_dir="."):
 
 def _blob_path(product, data_type, now):
     """Human-readable bronze path: raw/gold/2026/July/10/Intraday/14-30-05.json
-    All times UTC. ponytail: month name kills BQ partition pruning — switch the
-    %B back to %m when Phase 3 wires hive partitioning."""
+    All times ICT (Asia/Bangkok, UTC+7). ponytail: month name kills BQ partition
+    pruning — switch the %B back to %m when Phase 3 wires hive partitioning."""
     label = "OI" if data_type == "oi" else "Intraday"
     return f"raw/{product}/{now:%Y}/{now:%B}/{now:%d}/{label}/{now:%H-%M-%S}.json"
 
@@ -46,7 +48,7 @@ def upload_to_gcs(data, product, data_type, bucket_name):
     """Upload enriched payload to the GCS bronze path."""
     from google.cloud import storage
 
-    blob_path = _blob_path(product, data_type, datetime.now(timezone.utc))
+    blob_path = _blob_path(product, data_type, pendulum.now("Asia/Bangkok"))
     client = storage.Client()
     bucket = client.bucket(bucket_name)
     blob = bucket.blob(blob_path)

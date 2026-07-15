@@ -13,6 +13,11 @@ PRODUCTS = {
         "quikstrike_name": "Micro E-mini Nasdaq-100",
         "gcs_prefix": "mnq",
     },
+    "mes": {
+        "pid": 135,
+        "quikstrike_name": "Micro E-mini S&P 500",
+        "gcs_prefix": "mes",
+    },
 }
 
 DATA_TYPES = ["intraday", "oi"]
