@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Storage } from '@google-cloud/storage';
 import { dayPrefix, todayICT, PRODUCTS, Snapshot } from '@/lib/backtest';
-
-// Local dev: `gcloud auth application-default login`. Vercel: reader SA creds.
-const storage = new Storage();
-const BUCKET = process.env.GCS_BUCKET || 'oi-intraday-bucket';
+import { storage, BUCKET } from '@/lib/gcs';
 
 // Blob basename "HH-MM-SS.json" -> seconds-of-day, for nearest-time matching.
 const secOf = (name: string): number | null => {
