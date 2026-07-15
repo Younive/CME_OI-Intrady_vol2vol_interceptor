@@ -56,8 +56,10 @@ export default function Home() {
   // re-subscribing every fetch.
   const intradayPath = useRef('');
   const oiPath = useRef('');
-  intradayPath.current = intraday?.path ?? '';
-  oiPath.current = oi?.path ?? '';
+  useEffect(() => {
+    intradayPath.current = intraday?.path ?? '';
+    oiPath.current = oi?.path ?? '';
+  }, [intraday, oi]);
 
   useEffect(() => {
     let cancelled = false;
@@ -124,7 +126,7 @@ export default function Home() {
   // Expiry is fixed for the day (ExtractedAt + DTE·day is constant across
   // captures), so the target time is stable; `have` keeps refetches cheap.
   const sdPath = useRef('');
-  sdPath.current = sd?.path ?? '';
+  useEffect(() => { sdPath.current = sd?.path ?? ''; }, [sd]);
   const freshISO = freshest?.ExtractedAt;
   const freshDTE = freshest?.DTE;
   useEffect(() => {

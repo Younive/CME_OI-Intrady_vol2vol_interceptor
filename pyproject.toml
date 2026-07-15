@@ -11,3 +11,8 @@ dependencies = [
     "google-cloud-storage>=2.0.0",
     "pendulum>=3.0.0",
 ]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.21",
+]
