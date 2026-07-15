@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styles from '../page.module.css';
 import DistributionCharts from '@/components/DistributionCharts';
 import MetaGrid, { DteSel } from '@/components/MetaGrid';
@@ -68,8 +68,6 @@ export default function Backtest() {
   useEffect(() => { setIdx(times.length ? times.length - 1 : 0); setPlaying(false); }, [times]);
 
   // Play: advance one frame ~1.2s, stop at the end.
-  const playRef = useRef(playing);
-  playRef.current = playing;
   useEffect(() => {
     if (!playing) return;
     const t = setInterval(() => {

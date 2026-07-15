@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# No path filters: both jobs always run and report, so they are safe to use as
+# required checks (path-filtered required checks leave PRs stuck on "expected").
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend # never install from repo root (stray-lockfile guard)
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v7 # reads .python-version (3.12) + uv.lock
+      - run: uv sync
+      - run: uv run ruff check .
+      # The project's test suite = module self-checks (pure logic, no browser,
+      # no playwright install needed). data_handler needs GCS_ENABLED unset —
+      # true on a fresh runner.
+      - run: uv run python main.py check
+      - run: uv run python -m src.utils.data_handler
+      - run: uv run python -m src.utils.hasher
