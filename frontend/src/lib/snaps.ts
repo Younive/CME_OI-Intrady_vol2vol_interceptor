@@ -22,6 +22,7 @@ export async function nearestSnap(product: string, atSec: number, have: string) 
       const d = Math.abs(s - atSec);
       if (d < bestDiff) { bestDiff = d; best = f; }
     }
+    if (bestDiff === Infinity) continue; // no valid snapshot-named blobs in this dir
     if (best.name === have) return null; // unchanged — no download
     const snap = JSON.parse((await best.download())[0].toString()) as Snapshot;
     return { snap, path: best.name };
