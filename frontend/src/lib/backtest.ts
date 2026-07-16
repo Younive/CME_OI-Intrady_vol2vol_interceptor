@@ -83,6 +83,17 @@ export function rangeMoves(snap: Snapshot): RangeMove[] {
     });
 }
 
+// Anchor ± cumulative SD moves -> flat price levels ("sd1dn"/"sd1up"/…),
+// the shape the MT5 EA feed (/api/ea) serves.
+export function sdLevels(anchor: number, moves: RangeMove[]): Record<string, number> {
+  const out: Record<string, number> = {};
+  for (const m of moves) {
+    out[`sd${m.level}dn`] = Math.round((anchor - m.down) * 100) / 100;
+    out[`sd${m.level}up`] = Math.round((anchor + m.up) * 100) / 100;
+  }
+  return out;
+}
+
 // Snapshot whose DTE is closest to target (0.6 / 0.7). null if none carry DTE.
 export function nearestDTE(snaps: Snapshot[], target: number): Snapshot | null {
   let best: Snapshot | null = null;

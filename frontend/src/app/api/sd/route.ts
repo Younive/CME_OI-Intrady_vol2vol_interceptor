@@ -1,33 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { dayPrefix, todayICT, PRODUCTS, Snapshot } from '@/lib/backtest';
-import { storage, BUCKET } from '@/lib/gcs';
-
-// Blob basename "HH-MM-SS.json" -> seconds-of-day, for nearest-time matching.
-const secOf = (name: string): number | null => {
-  const m = name.match(/(\d{2})-(\d{2})-(\d{2})\.json$/);
-  return m ? +m[1] * 3600 + +m[2] * 60 + +m[3] : null;
-};
-
-// Today's snapshot captured nearest `atSec` (the time DTE crossed 0.6/0.7).
-// Prefers Intraday, falls back to OI. `have` short-circuits the download.
-async function nearestSnap(product: string, atSec: number, have: string) {
-  for (const dir of ['Intraday', 'OI'] as const) {
-    const [files] = await storage.bucket(BUCKET).getFiles({ prefix: dayPrefix(product, todayICT(), dir) });
-    if (!files.length) continue;
-    let best = files[0];
-    let bestDiff = Infinity;
-    for (const f of files) {
-      const s = secOf(f.name);
-      if (s == null) continue;
-      const d = Math.abs(s - atSec);
-      if (d < bestDiff) { bestDiff = d; best = f; }
-    }
-    if (best.name === have) return null; // unchanged — no download
-    const snap = JSON.parse((await best.download())[0].toString()) as Snapshot;
-    return { snap, path: best.name };
-  }
-  return null;
-}
+import { PRODUCTS } from '@/lib/backtest';
+import { secOf, nearestSnap } from '@/lib/snaps';
 
 export async function GET(req: NextRequest) {
   const product = req.nextUrl.searchParams.get('product') || '';
