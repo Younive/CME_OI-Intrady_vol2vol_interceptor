@@ -6,6 +6,7 @@ import {
   fmtICT,
   nearestDTE,
   rangeMoves,
+  sdLevels,
   todayICT,
 } from './backtest';
 
@@ -78,6 +79,23 @@ describe('rangeMoves', () => {
   });
   it('returns [] when Ranges is absent', () => {
     expect(rangeMoves(mkSnap())).toEqual([]);
+  });
+});
+
+describe('sdLevels', () => {
+  it('anchors asymmetric moves to flat sd{N}dn/up prices, rounded to cents', () => {
+    expect(
+      sdLevels(4005.9, [
+        { level: 1, down: 15.704, up: 15.4 },
+        { level: 2, down: 30.1, up: 32.09 },
+      ]),
+    ).toEqual({
+      sd1dn: 3990.2, sd1up: 4021.3,
+      sd2dn: 3975.8, sd2up: 4037.99,
+    });
+  });
+  it('returns {} for no moves', () => {
+    expect(sdLevels(100, [])).toEqual({});
   });
 });
 
