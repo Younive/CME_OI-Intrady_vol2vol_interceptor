@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PRODUCTS, rangeMoves, sdLevels, fmtICT, todayICT } from '@/lib/backtest';
+import { PRODUCTS, rangeMoves, sdLevels, topOiStrikes, fmtICT, todayICT } from '@/lib/backtest';
 import { fetchOpen } from '@/lib/open';
 import { secOf, nearestSnap, latestSnap } from '@/lib/snaps';
 
@@ -42,9 +42,13 @@ export async function GET(req: NextRequest) {
     const moves = rangeMoves(sdRes.snap);
     if (!moves.length) return NextResponse.json({ ok: false, reason: 'no-sd' });
 
-    const anchor = await fetchOpen(product, todayICT());
+    const [anchor, oiSnap] = await Promise.all([
+      fetchOpen(product, todayICT()),
+      latestSnap(product, ['OI']), // OI strikes act as S/R for the EA
+    ]);
     if (anchor == null) return NextResponse.json({ ok: false, reason: 'no-open' });
 
+    const oi = oiSnap ? topOiStrikes(oiSnap) : [];
     return NextResponse.json({
       ok: true,
       product,
@@ -52,6 +56,8 @@ export async function GET(req: NextRequest) {
       dteActual: sdRes.snap.DTE,
       anchor,
       ...sdLevels(anchor, moves),
+      atmVol: sdRes.snap.ATMVol,
+      ...Object.fromEntries(oi.map((s, i) => [`oi${i + 1}`, s])),
       futurePrice: latest.FuturePrice,
       futureAt: latest.ExtractedAt,
       sdAt: sdRes.snap.ExtractedAt,

@@ -8,6 +8,7 @@ import {
   rangeMoves,
   sdLevels,
   todayICT,
+  topOiStrikes,
 } from './backtest';
 
 // Minimal valid Snapshot; override what a test cares about.
@@ -96,6 +97,21 @@ describe('sdLevels', () => {
   });
   it('returns {} for no moves', () => {
     expect(sdLevels(100, [])).toEqual({});
+  });
+});
+
+describe('topOiStrikes', () => {
+  it('ranks strikes by call+put OI sum, returns top-n sorted by strike', () => {
+    const snap = mkSnap({
+      Call: { data: [{ x: 4000, y: 100 }, { x: 4050, y: 500 }, { x: 3950, y: 50 }] },
+      Put: { data: [{ x: 4000, y: 450 }, { x: 3950, y: 60 }, { x: 3900, y: 10 }] },
+    });
+    // sums: 4050=500, 4000=550, 3950=110, 3900=10
+    expect(topOiStrikes(snap, 2)).toEqual([4000, 4050]);
+    expect(topOiStrikes(snap)).toEqual([3900, 3950, 4000, 4050]);
+  });
+  it('returns [] for empty data', () => {
+    expect(topOiStrikes(mkSnap())).toEqual([]);
   });
 });
 

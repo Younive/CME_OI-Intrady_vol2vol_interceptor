@@ -94,6 +94,20 @@ export function sdLevels(anchor: number, moves: RangeMove[]): Record<string, num
   return out;
 }
 
+// Top-n strikes by summed call+put OI, sorted by strike — the S/R levels the
+// MT5 EA feed serves as flat oi1..oiN keys.
+export function topOiStrikes(snap: Snapshot, n = 8): number[] {
+  const sum = new Map<number, number>();
+  for (const d of [...snap.Call.data, ...snap.Put.data]) {
+    sum.set(d.x, (sum.get(d.x) ?? 0) + d.y);
+  }
+  return [...sum.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, n)
+    .map(([x]) => x)
+    .sort((a, b) => a - b);
+}
+
 // Snapshot whose DTE is closest to target (0.6 / 0.7). null if none carry DTE.
 export function nearestDTE(snaps: Snapshot[], target: number): Snapshot | null {
   let best: Snapshot | null = null;

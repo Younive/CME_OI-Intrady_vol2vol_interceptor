@@ -30,10 +30,14 @@ export async function nearestSnap(product: string, atSec: number, have: string) 
   return null;
 }
 
-// Today's newest snapshot, Intraday preferred, OI fallback. Blob names are
-// zero-padded HH-MM-SS.json so lexical max = latest. One download.
-export async function latestSnap(product: string): Promise<Snapshot | null> {
-  for (const dir of ['Intraday', 'OI'] as const) {
+// Today's newest snapshot from the first dir that has one (default: Intraday
+// preferred, OI fallback). Blob names are zero-padded HH-MM-SS.json so lexical
+// max = latest. One download.
+export async function latestSnap(
+  product: string,
+  dirs: readonly ('OI' | 'Intraday')[] = ['Intraday', 'OI'],
+): Promise<Snapshot | null> {
+  for (const dir of dirs) {
     const [files] = await storage.bucket(BUCKET).getFiles({ prefix: dayPrefix(product, todayICT(), dir) });
     if (!files.length) continue;
     const newest = files.reduce((a, b) => (a.name > b.name ? a : b));
