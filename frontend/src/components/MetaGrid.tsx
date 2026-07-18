@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import styles from '../app/page.module.css';
 import { Snapshot, rangeMoves, RangeMove } from '@/lib/backtest';
+import { ui } from '@/lib/ui';
 
 export type DteSel = 0.6 | 0.7;
 
@@ -13,16 +13,18 @@ const fmtChg = (val?: number) => {
 
 const px = (v: number) => v.toFixed(1);
 
+const chgColor = (val?: number) => ((val || 0) >= 0 ? 'text-green-500' : 'text-rose-500');
+
 // Per-SD-level rows: prices = open ± scraped move (asymmetric). When open is
 // unknown, fall back to the raw ± move sizes so the card still says something.
 function RangeRows({ open, moves }: { open: number | null; moves: RangeMove[] }) {
-  if (!moves.length) return <span className={styles.metaValue}>—</span>;
+  if (!moves.length) return <span className={ui.metaValue}>—</span>;
   return (
-    <div className={styles.rangeRows}>
+    <div className="mt-1.5 flex flex-col gap-1">
       {moves.map((m) => (
-        <div key={m.level} className={styles.rangeRow}>
-          <span className={styles.rangeLevel}>±{m.level} SD</span>
-          <span className={styles.rangeVal}>
+        <div key={m.level} className="flex justify-between gap-2 tabular-nums">
+          <span className="text-xs text-slate-400">±{m.level} SD</span>
+          <span className="font-mono text-[0.85rem] font-bold text-slate-100">
             {open != null ? `${px(open - m.down)} – ${px(open + m.up)}` : `−${px(m.down)} / +${px(m.up)}`}
           </span>
         </div>
@@ -47,47 +49,51 @@ export default function MetaGrid({
   const sdMoves = sdSnap ? rangeMoves(sdSnap) : [];
 
   return (
-    <div className={styles.metaGrid}>
-      <div className={styles.metaItem}>
-        <span className={styles.metaLabel}>Future Price</span>
-        <span className={styles.metaValue}>${data.FuturePrice}</span>
-        <span style={{ color: (data.ExtractedFutureChg || 0) >= 0 ? '#22c55e' : '#ef4444', fontSize: '0.8rem', fontWeight: 'bold' }}>
+    <div className={ui.metaGrid}>
+      <div className={ui.metaItem}>
+        <span className={ui.metaLabel}>Future Price</span>
+        <span className={ui.metaValue}>${data.FuturePrice}</span>
+        <span className={`font-mono text-[0.8rem] font-bold ${chgColor(data.ExtractedFutureChg)}`}>
           ({fmtChg(data.ExtractedFutureChg)})
         </span>
       </div>
 
-      <div className={styles.metaItem}>
-        <span className={styles.metaLabel}>Open Price</span>
-        <span className={styles.metaValue}>{open != null ? `$${open}` : '—'}</span>
+      <div className={ui.metaItem}>
+        <span className={ui.metaLabel}>Open Price</span>
+        <span className={ui.metaValue}>{open != null ? `$${open}` : '—'}</span>
       </div>
 
-      <div className={styles.metaItem}>
-        <span className={styles.metaLabel}>Implied Vol (Vol)</span>
-        <span className={styles.metaValue}>{data.ExtractedVol}%</span>
-        <span style={{ color: (data.ExtractedVolChg || 0) >= 0 ? '#22c55e' : '#ef4444', fontSize: '0.8rem', fontWeight: 'bold' }}>
+      <div className={ui.metaItem}>
+        <span className={ui.metaLabel}>Implied Vol (Vol)</span>
+        <span className={ui.metaValue}>{data.ExtractedVol}%</span>
+        <span className={`font-mono text-[0.8rem] font-bold ${chgColor(data.ExtractedVolChg)}`}>
           ({fmtChg(data.ExtractedVolChg)})
         </span>
       </div>
 
-      <div className={styles.metaItem}>
-        <div className={styles.rangeHead}>
-          <span className={styles.metaLabel}>SD Ranges</span>
-          <div className={styles.dteToggle}>
+      <div className={ui.metaItem}>
+        <div className="mb-1 flex items-center justify-between gap-2">
+          <span className={ui.metaLabel}>SD Ranges</span>
+          <div className="inline-flex gap-0.5 rounded bg-black/20 p-0.5">
             {([0.7, 0.6] as DteSel[]).map((v) => (
-              <button key={v} className={`${styles.dteBtn} ${dteSel === v ? styles.dteActive : ''}`} onClick={() => onDteSel(v)}>
+              <button
+                key={v}
+                className={`cursor-pointer rounded px-2 py-0.5 text-xs font-semibold ${dteSel === v ? 'bg-indigo-500 text-white' : 'text-slate-400'}`}
+                onClick={() => onDteSel(v)}
+              >
                 {v}
               </button>
             ))}
           </div>
         </div>
-        <span style={{ color: '#64748b', fontSize: '0.7rem' }}>
+        <span className="text-[0.7rem] text-slate-500">
           {sdSnap?.DTE != null ? `@ ${sdSnap.DTE.toFixed(2)} DTE` : 'not yet today'}
         </span>
         <RangeRows open={open} moves={sdMoves} />
       </div>
 
-      <div className={styles.metaItem}>
-        <span className={styles.metaLabel}>Realtime Ranges</span>
+      <div className={ui.metaItem}>
+        <span className={ui.metaLabel}>Realtime Ranges</span>
         <RangeRows open={open} moves={rtMoves} />
       </div>
     </div>

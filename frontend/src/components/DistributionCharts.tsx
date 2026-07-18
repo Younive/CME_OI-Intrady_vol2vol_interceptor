@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import styles from '../app/page.module.css';
 import { Snapshot } from '@/lib/backtest';
+import { ui } from '@/lib/ui';
 import {
   Line,
   XAxis,
@@ -17,14 +17,16 @@ import {
   Bar,
 } from 'recharts';
 
+// Token references from globals.css / context/ui-context.md — SVG fill/stroke
+// and inline styles resolve var() at paint time.
 const themeColors = {
-  call: '#38bdf8',
-  put: '#fb923c',
-  vol: '#f43f5e',
-  future: '#facc15',
-  delta: '#9B9B9B',
-  grid: '#334155',
-  text: '#94a3b8',
+  call: 'var(--call-color)',
+  put: 'var(--put-color)',
+  vol: 'var(--vol-color)',
+  future: 'var(--price-level)',
+  delta: 'var(--text-muted)',
+  grid: 'var(--chart-grid)',
+  text: 'var(--text-muted)',
 };
 
 export default function DistributionCharts({
@@ -100,11 +102,11 @@ export default function DistributionCharts({
   }, [xDomain]);
 
   return (
-    <section className={styles.chartSection}>
-      <div className={styles.chartHeader}>
-        <h2 className={styles.chartTitle}>Call/Put Breakdown</h2>
+    <section className="w-full">
+      <div className="mt-2 mb-5 flex items-center justify-between px-2">
+        <h2 className="py-1 text-[1.1rem] font-semibold text-slate-300">Call/Put Breakdown</h2>
       </div>
-      <div className={styles.chartWrapper}>
+      <div className={ui.chartWrapper}>
         {mounted && (
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={chartData}>
@@ -116,7 +118,7 @@ export default function DistributionCharts({
               <XAxis dataKey="strike" type="number" domain={xDomain} ticks={xTicks.length ? xTicks : undefined} stroke={themeColors.text} fontSize={12} tickLine={true} axisLine={true} allowDataOverflow={false} />
               <YAxis yAxisId="left" stroke={themeColors.text} fontSize={12} tickLine={false} axisLine={false} />
               <YAxis yAxisId="right" orientation="right" stroke={themeColors.vol} fontSize={12} tickLine={false} axisLine={false} domain={['auto', 'auto']} />
-              <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px', color: '#fff' }} itemStyle={{ color: '#fff' }} cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }} />
+              <Tooltip contentStyle={{ backgroundColor: 'var(--bg-elevated)', border: '1px solid var(--border-default)', borderRadius: '8px', color: 'var(--text-primary)' }} itemStyle={{ color: 'var(--text-primary)' }} cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }} />
               <Legend verticalAlign="top" height={36} wrapperStyle={{ paddingBottom: '20px' }} />
               {/* Scraped ΔP/ΔC strikes. */}
               {deltaLines.map((l, i) => (
