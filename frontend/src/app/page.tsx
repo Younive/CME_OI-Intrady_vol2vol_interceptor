@@ -2,10 +2,10 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import styles from './page.module.css';
 import DistributionCharts from '@/components/DistributionCharts';
 import MetaGrid, { DteSel } from '@/components/MetaGrid';
 import { fmtICT, todayICT, PRODUCTS, Product, Snapshot } from '@/lib/backtest';
+import { ui } from '@/lib/ui';
 
 interface DirLatest {
   snap: Snapshot;
@@ -114,7 +114,6 @@ export default function Home() {
     return () => { cancelled = true; };
   }, [product, today]);
 
-  const btn = (active: boolean) => `${styles.toggleButton} ${active ? styles.active : ''}`;
   // Freshest capture across both data types, for the header badge.
   const snaps = [intraday?.snap, oi?.snap].filter((s): s is Snapshot => !!s);
   const freshest = snaps.length
@@ -144,22 +143,22 @@ export default function Home() {
   }, [product, dteSel, freshISO, freshDTE]);
 
   return (
-    <main className={styles.main}>
-      <header className={styles.header}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+    <main className={ui.main}>
+      <header className="mb-8 border-b border-slate-700 pb-4 text-left">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className={styles.title}>{freshest?.Title || 'CME Vol2Vol Dashboard'}</h1>
-            <p style={{ color: '#94a3b8', margin: '5px 0 0 0' }}>Live — newest scraped snapshot</p>
+            <h1 className={ui.title}>{freshest?.Title || 'CME Vol2Vol Dashboard'}</h1>
+            <p className="mt-[5px] text-slate-400">Live — newest scraped snapshot</p>
           </div>
-          <div style={{ textAlign: 'right' }}>
-            <div className={styles.toggleContainer} style={{ marginBottom: '10px' }}>
+          <div className="text-right">
+            <div className={`${ui.toggleGroup} mb-[10px]`}>
               {PRODUCTS.map((p) => (
-                <button key={p} className={btn(product === p)} onClick={() => setProduct(p)}>
+                <button key={p} className={`${ui.toggleBtn} ${product === p ? ui.toggleActive : ''}`} onClick={() => setProduct(p)}>
                   {p.toUpperCase()}
                 </button>
               ))}
             </div>
-            <span style={{ color: '#64748b', fontSize: '0.8rem', display: 'block', marginTop: '10px' }}>
+            <span className="mt-[10px] block text-[0.8rem] text-slate-500">
               {freshest
                 ? <>🟢 Last capture {fmtICT(freshest.ExtractedAt)} ICT · {ago(freshest.ExtractedAt, now)}</>
                 : 'No live snapshot'}
@@ -168,12 +167,12 @@ export default function Home() {
         </div>
       </header>
 
-      {loading && <p style={{ color: '#94a3b8' }}>Loading…</p>}
-      {err && <p style={{ color: '#ef4444' }}>Error: {err}</p>}
+      {loading && <p className="text-slate-400">Loading…</p>}
+      {err && <p className="text-rose-500">Error: {err}</p>}
       {!loading && !err && !hasData && (
-        <p style={{ color: '#94a3b8' }}>
+        <p className="text-slate-400">
           No data yet today (ICT) for {product.toUpperCase()} — market may be closed.
-          {' '}Browse past days in <Link href="/backtest" style={{ color: 'var(--accent)' }}>Backtest Replay</Link>.
+          {' '}Browse past days in <Link href="/backtest" className="text-indigo-500">Backtest Replay</Link>.
         </p>
       )}
 
@@ -182,20 +181,23 @@ export default function Home() {
       )}
 
       {hasData && (
-        <>
-          <h2 className={styles.sectionTitle}>Intraday Volume</h2>
-          {intraday
-            ? <DistributionCharts data={intraday.snap} viewMode="intraday" mounted={mounted} />
-            : <p style={{ color: '#94a3b8' }}>No intraday snapshot yet today.</p>}
-
-          <h2 className={styles.sectionTitle}>Open Interest</h2>
-          {oi
-            ? <DistributionCharts data={oi.snap} viewMode="oi" mounted={mounted} />
-            : <p style={{ color: '#94a3b8' }}>No OI snapshot yet today.</p>}
-        </>
+        <div className={ui.chartRow}>
+          <div>
+            <h2 className={ui.sectionTitle}>Intraday Volume</h2>
+            {intraday
+              ? <DistributionCharts data={intraday.snap} viewMode="intraday" mounted={mounted} />
+              : <p className="text-slate-400">No intraday snapshot yet today.</p>}
+          </div>
+          <div>
+            <h2 className={ui.sectionTitle}>Open Interest</h2>
+            {oi
+              ? <DistributionCharts data={oi.snap} viewMode="oi" mounted={mounted} />
+              : <p className="text-slate-400">No OI snapshot yet today.</p>}
+          </div>
+        </div>
       )}
 
-      <footer className={styles.footer}>
+      <footer className={ui.footer}>
         <p>CME QuikStrike Data Interceptor — Live</p>
       </footer>
     </main>

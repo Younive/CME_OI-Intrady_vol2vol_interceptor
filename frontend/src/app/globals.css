@@ -1,9 +1,29 @@
+@import "tailwindcss";
+
+/* Design tokens — mirrors the table in context/ui-context.md exactly. */
 :root {
-  --background: #0f172a;
-  --foreground: #f8fafc;
-  --card-bg: #1e293b;
-  --accent: #6366f1;
-  --border: #334155;
+  --bg-base: #020617;
+  --bg-surface: #0f172a;
+  --bg-elevated: #1e293b;
+  --text-primary: #ffffff;
+  --text-muted: #94a3b8;
+  --text-subtle: #64748b;
+  --accent-primary: #6366f1;
+  --border-default: #334155;
+  --border-subtle: #1e293b;
+  --state-error: #f43f5e;
+  --state-success: #22c55e;
+  --price-level: #facc15;
+  --call-color: #38bdf8;
+  --put-color: #fb923c;
+  --vol-color: #f43f5e;
+  --total-color: #818cf8;
+  --chart-grid: #334155;
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
 html,
@@ -17,20 +37,8 @@ body {
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text-primary);
+  background: var(--bg-base);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
 }
