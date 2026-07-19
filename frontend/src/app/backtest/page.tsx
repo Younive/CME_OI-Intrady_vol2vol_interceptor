@@ -195,7 +195,7 @@ export default function Backtest() {
   // scale doesn't rescale mid-playback; a date-jump re-locks it to the new day.
   useEffect(() => {
     if (scrubDay) setScaleDay(scrubDay);
-    // eslint-disable-next-line react-hooks/exhaustive-deps — read scrubDay at focus time only
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- read scrubDay at focus time only
   }, [focus]);
 
   // SD reference = the session's snapshot nearest the selected DTE, but only

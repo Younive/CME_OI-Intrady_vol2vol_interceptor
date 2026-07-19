@@ -38,7 +38,11 @@ export default function PriceChart({ candles, source, interval, replayUntil, lev
   const seriesRef = useRef<ISeriesApi<'Candlestick'> | null>(null);
   const priceLinesRef = useRef<IPriceLine[]>([]);
   const replayUntilRef = useRef(replayUntil);
-  replayUntilRef.current = replayUntil; // latest head, read without re-triggering the window effect
+  // Keep the latest head in a ref so the window effect can read it without
+  // listing replayUntil as a dep (which would recenter on every step). Synced in
+  // an effect (not during render); declared before the window effect so it runs
+  // first on a shared commit (date-jump changes replayUntil + focus together).
+  useEffect(() => { replayUntilRef.current = replayUntil; }, [replayUntil]);
 
   // "OI price" $25 grid: every multiple of 25 across the day's OI strike range
   // (from the OI chart); falls back to the candle low/high when there's no OI
