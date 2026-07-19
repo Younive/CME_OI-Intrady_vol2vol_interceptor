@@ -4,9 +4,11 @@ import {
   asOf,
   dayPrefix,
   fmtICT,
+  ictDate,
   nearestDTE,
   rangeMoves,
   sdLevels,
+  sessionDay,
   todayICT,
   topOiStrikes,
 } from './backtest';
@@ -112,6 +114,21 @@ describe('topOiStrikes', () => {
   });
   it('returns [] for empty data', () => {
     expect(topOiStrikes(mkSnap())).toEqual([]);
+  });
+});
+
+describe('ictDate', () => {
+  it('maps a UTC ISO to its ICT calendar day (UTC+7), crossing midnight', () => {
+    expect(ictDate('2026-07-16T17:00:00Z')).toBe('2026-07-17'); // 00:00 ICT
+    expect(ictDate('2026-07-16T16:59:59Z')).toBe('2026-07-16'); // 23:59 ICT
+  });
+});
+
+describe('sessionDay', () => {
+  it('assigns the Globex 05:00→05:00 ICT session day (00:00–05:00 ICT → prev day)', () => {
+    expect(sessionDay('2026-07-16T22:00:00Z')).toBe('2026-07-17'); // 05:00 ICT — new session
+    expect(sessionDay('2026-07-16T21:59:59Z')).toBe('2026-07-16'); // 04:59 ICT — prev session
+    expect(sessionDay('2026-07-17T05:00:00Z')).toBe('2026-07-17'); // 12:00 ICT — mid session
   });
 });
 

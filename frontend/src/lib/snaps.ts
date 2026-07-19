@@ -1,6 +1,26 @@
 // Server-side GCS snapshot lookups shared by API routes.
-import { dayPrefix, todayICT, Snapshot } from '@/lib/backtest';
+import type { File } from '@google-cloud/storage';
+import { dayPrefix, todayICT, MONTHS, Snapshot } from '@/lib/backtest';
 import { storage, BUCKET } from '@/lib/gcs';
+
+// Download + parse one snapshot blob.
+export const downloadSnap = async (f: File): Promise<Snapshot> =>
+  JSON.parse((await f.download())[0].toString()) as Snapshot;
+
+// All ICT days with captured data for a product, ascending YYYY-MM-DD. One
+// names-only bucket listing; day parsed from raw/<product>/<Y>/<Month>/<D>/….
+export async function listCaptureDays(product: string): Promise<string[]> {
+  const [files] = await storage.bucket(BUCKET).getFiles({ prefix: `raw/${product}/` });
+  const days = new Set<string>();
+  for (const f of files) {
+    const m = f.name.match(/^raw\/[^/]+\/(\d{4})\/([A-Za-z]+)\/(\d{2})\//);
+    if (!m) continue;
+    const month = MONTHS.indexOf(m[2]) + 1;
+    if (!month) continue;
+    days.add(`${m[1]}-${String(month).padStart(2, '0')}-${m[3]}`);
+  }
+  return Array.from(days).sort();
+}
 
 // Blob basename "HH-MM-SS.json" -> seconds-of-day, for nearest-time matching.
 export const secOf = (name: string): number | null => {
@@ -24,8 +44,7 @@ export async function nearestSnap(product: string, atSec: number, have: string) 
     }
     if (bestDiff === Infinity) continue; // no valid snapshot-named blobs in this dir
     if (best.name === have) return null; // unchanged — no download
-    const snap = JSON.parse((await best.download())[0].toString()) as Snapshot;
-    return { snap, path: best.name };
+    return { snap: await downloadSnap(best), path: best.name };
   }
   return null;
 }
@@ -40,8 +59,7 @@ export async function latestSnap(
   for (const dir of dirs) {
     const [files] = await storage.bucket(BUCKET).getFiles({ prefix: dayPrefix(product, todayICT(), dir) });
     if (!files.length) continue;
-    const newest = files.reduce((a, b) => (a.name > b.name ? a : b));
-    return JSON.parse((await newest.download())[0].toString()) as Snapshot;
+    return downloadSnap(files.reduce((a, b) => (a.name > b.name ? a : b)));
   }
   return null;
 }

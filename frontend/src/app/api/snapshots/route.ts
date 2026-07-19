@@ -1,35 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { dayPrefix, PRODUCTS, Snapshot } from '@/lib/backtest';
+import { dayPrefix, Snapshot } from '@/lib/backtest';
 import { storage, BUCKET } from '@/lib/gcs';
+import { downloadSnap } from '@/lib/snaps';
+import { bad, guard, reqDate, reqProduct } from '@/lib/api';
 
 async function loadDir(product: string, date: string, dir: 'OI' | 'Intraday'): Promise<Snapshot[]> {
   const [files] = await storage.bucket(BUCKET).getFiles({ prefix: dayPrefix(product, date, dir) });
-  const snaps = await Promise.all(
-    files.map(async (f) => JSON.parse((await f.download())[0].toString()) as Snapshot)
-  );
+  const snaps = await Promise.all(files.map(downloadSnap));
   // Chronological. ISO-8601 UTC strings sort lexically = by time.
   return snaps.sort((a, b) => a.ExtractedAt.localeCompare(b.ExtractedAt));
 }
 
 export async function GET(req: NextRequest) {
-  const product = req.nextUrl.searchParams.get('product') || '';
-  const date = req.nextUrl.searchParams.get('date') || '';
+  const product = reqProduct(req);
+  if (!product) return bad('bad product');
+  const date = reqDate(req);
+  if (!date) return bad('bad date (YYYY-MM-DD)');
 
-  if (!PRODUCTS.includes(product as never)) {
-    return NextResponse.json({ error: 'bad product' }, { status: 400 });
-  }
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-    return NextResponse.json({ error: 'bad date (YYYY-MM-DD)' }, { status: 400 });
-  }
-
-  try {
+  return guard('api/snapshots', async () => {
     const [intraday, oi] = await Promise.all([
       loadDir(product, date, 'Intraday'),
       loadDir(product, date, 'OI'),
     ]);
     return NextResponse.json({ intraday, oi });
-  } catch (e) {
-    console.error('api/snapshots', e); // detail server-side only
-    return NextResponse.json({ error: 'internal error' }, { status: 500 });
-  }
+  });
 }

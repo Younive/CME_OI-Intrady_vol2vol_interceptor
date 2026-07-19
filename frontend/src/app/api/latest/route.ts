@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { dayPrefix, todayICT, PRODUCTS, Snapshot } from '@/lib/backtest';
+import { dayPrefix, todayICT, Snapshot } from '@/lib/backtest';
 import { storage, BUCKET } from '@/lib/gcs';
+import { downloadSnap } from '@/lib/snaps';
+import { bad, guard, reqProduct } from '@/lib/api';
 
 // Newest snapshot for today's ICT dir. Blob names are zero-padded `HH-MM-SS.json`
 // so lexical max = latest. `have` = path the client already holds; if unchanged
@@ -20,27 +22,20 @@ async function latestDir(
   if (!files.length) return 'empty';
   const newest = files.reduce((a, b) => (a.name > b.name ? a : b));
   if (newest.name === have) return 'unchanged'; // no download
-  const snap = JSON.parse((await newest.download())[0].toString()) as Snapshot;
-  return { snap, path: newest.name };
+  return { snap: await downloadSnap(newest), path: newest.name };
 }
 
 export async function GET(req: NextRequest) {
-  const product = req.nextUrl.searchParams.get('product') || '';
+  const product = reqProduct(req);
+  if (!product) return bad('bad product');
   const intradayHave = req.nextUrl.searchParams.get('intradayHave') || '';
   const oiHave = req.nextUrl.searchParams.get('oiHave') || '';
 
-  if (!PRODUCTS.includes(product as never)) {
-    return NextResponse.json({ error: 'bad product' }, { status: 400 });
-  }
-
-  try {
+  return guard('api/latest', async () => {
     const [intraday, oi] = await Promise.all([
       latestDir(product, 'Intraday', intradayHave),
       latestDir(product, 'OI', oiHave),
     ]);
     return NextResponse.json({ intraday, oi });
-  } catch (e) {
-    console.error('api/latest', e); // detail server-side only
-    return NextResponse.json({ error: 'internal error' }, { status: 500 });
-  }
+  });
 }

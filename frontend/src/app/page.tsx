@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import DistributionCharts from '@/components/DistributionCharts';
+import IntradayOiPanel from '@/components/IntradayOiPanel';
 import MetaGrid, { DteSel } from '@/components/MetaGrid';
 import { fmtICT, todayICT, PRODUCTS, Product, Snapshot } from '@/lib/backtest';
 import { ui } from '@/lib/ui';
@@ -181,20 +181,7 @@ export default function Home() {
       )}
 
       {hasData && (
-        <div className={ui.chartRow}>
-          <div>
-            <h2 className={ui.sectionTitle}>Intraday Volume</h2>
-            {intraday
-              ? <DistributionCharts data={intraday.snap} viewMode="intraday" mounted={mounted} />
-              : <p className="text-slate-400">No intraday snapshot yet today.</p>}
-          </div>
-          <div>
-            <h2 className={ui.sectionTitle}>Open Interest</h2>
-            {oi
-              ? <DistributionCharts data={oi.snap} viewMode="oi" mounted={mounted} />
-              : <p className="text-slate-400">No OI snapshot yet today.</p>}
-          </div>
-        </div>
+        <IntradayOiPanel intraday={intraday?.snap ?? null} oi={oi?.snap ?? null} mounted={mounted} />
       )}
 
       <footer className={ui.footer}>
