@@ -28,7 +28,7 @@ interface Props {
   open: number | null; // scrub day's session open, gold line
   priceRange: { min: number; max: number } | null; // day-pinned vertical scale
   oiRange: { min: number; max: number } | null; // day's OI strike min/max → OI grid span
-  gridStep?: number; // OI price grid step (25 default; 100 for MNQ)
+  gridStep?: number; // OI price grid step (per-product GRID_STEP: gold 25, nq 100, wti 1)
   focus: number; // bump → reposition the window (fresh load / date jump only)
 }
 

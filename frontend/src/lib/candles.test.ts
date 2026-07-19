@@ -79,12 +79,12 @@ describe('fetchCandles', () => {
     expect(fetchMock.mock.calls[2][0]).toContain('XAUUSD%3DX');
   });
 
-  it('returns null when every leg is empty (no spot leg for mnq)', async () => {
+  it('returns null when every leg is empty (no spot leg for nq)', async () => {
     const fetchMock = vi.fn().mockResolvedValue(yahoo([]));
     vi.stubGlobal('fetch', fetchMock);
 
-    expect(await fetchCandles('mnq', '2026-07-04')).toBeNull();
-    expect(fetchMock).toHaveBeenCalledTimes(2); // MNQ=F 5m + 1h only, no spot
+    expect(await fetchCandles('nq', '2026-07-04')).toBeNull();
+    expect(fetchMock).toHaveBeenCalledTimes(2); // NQ=F 5m + 1h only, no spot
   });
 
   it('caches past dates, never today', async () => {

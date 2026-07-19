@@ -126,8 +126,12 @@ export interface DaySnapshots {
   oi: Snapshot[];
 }
 
-export const PRODUCTS = ['gold', 'mnq', 'mes'] as const;
+export const PRODUCTS = ['gold', 'nq', 'wti'] as const;
 export type Product = (typeof PRODUCTS)[number];
+
+// OI price-grid step per product (PriceChart auto-widens if too dense, never
+// narrows). gold $25; nq 100 (Nasdaq-100 index); wti $1 (crude ~$60-75).
+export const GRID_STEP: Record<Product, number> = { gold: 25, nq: 100, wti: 1 };
 
 // UTC ISO -> "HH:MM:SS" in ICT (Asia/Bangkok), matching bucket path tz.
 // Isomorphic (plain Intl) — works server- and client-side.

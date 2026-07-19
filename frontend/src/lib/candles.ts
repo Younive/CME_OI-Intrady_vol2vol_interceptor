@@ -18,8 +18,8 @@ export interface CandleDay {
   interval: '5m' | '1h';
 }
 
-const FUTURES: Record<string, string> = { gold: 'GC=F', mnq: 'MNQ=F', mes: 'MES=F' };
-// ponytail: spot fallback gold-only per spec; mnq/mes have no clean spot twin.
+const FUTURES: Record<string, string> = { gold: 'GC=F', nq: 'NQ=F', wti: 'CL=F' };
+// ponytail: spot fallback gold-only per spec; nq/wti have no clean spot twin.
 const SPOT: Record<string, string> = { gold: 'XAUUSD=X' };
 
 // Minimal narrowing of the Yahoo v8 chart response (external boundary).

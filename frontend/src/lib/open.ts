@@ -1,7 +1,7 @@
 // Session open from Yahoo Finance v8 chart (no auth, no dependency).
 // Server-side only (fetches an external host).
 
-export const TICKER: Record<string, string> = { gold: 'GC=F', mnq: 'MNQ=F', mes: 'MES=F' };
+export const TICKER: Record<string, string> = { gold: 'GC=F', nq: 'NQ=F', wti: 'CL=F' };
 
 // Minimal narrowing of the Yahoo v8 chart response (external boundary).
 interface YahooChart {
