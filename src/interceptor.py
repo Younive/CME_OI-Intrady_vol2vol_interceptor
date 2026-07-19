@@ -16,6 +16,7 @@ from src.utils.data_handler import (
     upload_to_gcs,
     get_stored_hash,
     set_stored_hash,
+    floor_to_grid,
 )
 
 
@@ -88,7 +89,9 @@ class CMEInterceptor:
 
     def enrich_data(self, data):
         """Adds product/data_type/expiration_date + extracted subtitle fields."""
-        data["ExtractedAt"] = pendulum.now("UTC").to_iso8601_string()
+        # Snap to the 5-min grid: the scheduler fires on the mark, capture lags
+        # 10-90s (cold start + browser), so floor stamps the slot that fired.
+        data["ExtractedAt"] = floor_to_grid(pendulum.now("UTC")).to_iso8601_string()
         data["product"] = self.product
         data["data_type"] = self.current_target
         data["expiration_date"] = self._expiration_date()

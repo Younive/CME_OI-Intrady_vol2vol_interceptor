@@ -36,6 +36,14 @@ def write_frontend_json(data, product, data_type, base_dir="."):
     print(f"[+] Wrote {filepath}")
 
 
+def floor_to_grid(dt, minutes=5):
+    """Snap a pendulum datetime DOWN to the N-minute grid. The scheduler fires on
+    the grid; capture lags by cold-start + browser launch, so floor = the slot
+    that fired. ponytail: minutes=5 matches the */5 crons — the tuning knob if
+    the schedule interval ever changes."""
+    return dt.set(minute=dt.minute - dt.minute % minutes, second=0, microsecond=0)
+
+
 def _blob_path(product, data_type, now):
     """Human-readable bronze path: raw/gold/2026/July/10/Intraday/14-30-05.json
     All times ICT (Asia/Bangkok, UTC+7). ponytail: month name kills BQ partition
@@ -48,7 +56,10 @@ def upload_to_gcs(data, product, data_type, bucket_name):
     """Upload enriched payload to the GCS bronze path."""
     from google.cloud import storage
 
-    blob_path = _blob_path(product, data_type, pendulum.now("Asia/Bangkok"))
+    # Filename from the already-snapped ExtractedAt so field and path never
+    # diverge (both land on the same 5-min grid slot, in ICT for the path).
+    now_ict = pendulum.parse(data["ExtractedAt"]).in_timezone("Asia/Bangkok")
+    blob_path = _blob_path(product, data_type, now_ict)
     client = storage.Client()
     bucket = client.bucket(bucket_name)
     blob = bucket.blob(blob_path)
@@ -141,6 +152,10 @@ if __name__ == "__main__":
     t = datetime(2026, 7, 10, 14, 30, 5, tzinfo=timezone.utc)
     assert _blob_path("gold", "intraday", t) == "raw/gold/2026/July/10/Intraday/14-30-05.json"
     assert _blob_path("mnq", "oi", t) == "raw/mnq/2026/July/10/OI/14-30-05.json"
+
+    g = pendulum.datetime(2026, 7, 10, 14, 37, 22, tz="UTC")
+    assert floor_to_grid(g).to_iso8601_string().startswith("2026-07-10T14:35:00")
+    assert floor_to_grid(g.set(minute=40, second=0)).minute == 40  # already on grid
 
     origin = os.getcwd()
     with tempfile.TemporaryDirectory() as d:
