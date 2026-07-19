@@ -5,7 +5,7 @@ import IntradayOiPanel from '@/components/IntradayOiPanel';
 import MetaGrid, { DteSel } from '@/components/MetaGrid';
 import PriceChart from '@/components/PriceChart';
 import { BacktestSkeleton } from '@/components/Skeleton';
-import { asOf, ictDate, nearestDTE, rangeMoves, sdLevels, sessionDay, DaySnapshots, Snapshot, todayICT, PRODUCTS, Product } from '@/lib/backtest';
+import { asOf, ictDate, nearestDTE, rangeMoves, sdLevels, sessionDay, DaySnapshots, Snapshot, todayICT, PRODUCTS, Product, GRID_STEP } from '@/lib/backtest';
 import { CandleDay } from '@/lib/candles';
 import { ui } from '@/lib/ui';
 
@@ -365,7 +365,7 @@ export default function Backtest() {
                 open={open}
                 priceRange={priceRange}
                 oiRange={oiRange}
-                gridStep={product === 'mnq' ? 100 : 25}
+                gridStep={GRID_STEP[product]}
                 focus={focus}
               />
             ) : (

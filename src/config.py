@@ -8,15 +8,15 @@ PRODUCTS = {
         "quikstrike_name": "Gold (OG|GC)",
         "gcs_prefix": "gold",
     },
-    "mnq": {
-        "pid": 136,
-        "quikstrike_name": "Micro E-mini Nasdaq-100",
-        "gcs_prefix": "mnq",
+    "nq": {
+        "pid": 121,
+        "quikstrike_name": "E-mini Nasdaq-100",
+        "gcs_prefix": "nq",
     },
-    "mes": {
-        "pid": 135,
-        "quikstrike_name": "Micro E-mini S&P 500",
-        "gcs_prefix": "mes",
+    "wti": {
+        "pid": 30,
+        "quikstrike_name": "WTI Crude Oil (CL)",
+        "gcs_prefix": "wti",
     },
 }
 

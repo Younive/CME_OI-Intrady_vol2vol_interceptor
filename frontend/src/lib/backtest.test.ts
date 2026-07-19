@@ -32,7 +32,7 @@ describe('dayPrefix', () => {
     expect(dayPrefix('gold', '2026-07-15', 'OI')).toBe('raw/gold/2026/July/15/OI/');
   });
   it('maps single-digit months without off-by-one', () => {
-    expect(dayPrefix('mnq', '2026-03-05', 'Intraday')).toBe('raw/mnq/2026/March/05/Intraday/');
+    expect(dayPrefix('nq', '2026-03-05', 'Intraday')).toBe('raw/nq/2026/March/05/Intraday/');
   });
 });
 
