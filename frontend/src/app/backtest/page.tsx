@@ -31,7 +31,8 @@ const ghostBtn =
 // Yahoo keeps ~60 days of 5m candles — older replay has no chart anyway.
 const MAX_SPAN_DAYS = 60;
 
-const byExtractedAt = (a: Snapshot, b: Snapshot) => (a.ExtractedAt < b.ExtractedAt ? -1 : 1);
+const byExtractedAt = (a: Snapshot, b: Snapshot) =>
+  a.ExtractedAt < b.ExtractedAt ? -1 : a.ExtractedAt > b.ExtractedAt ? 1 : 0;
 
 // Intraday-else-OI snapshots for one session day (optionally as-of `upTo`).
 function sessionPool(day: DaySnapshots, sessionD: string, upTo?: string): Snapshot[] {

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useRef } from 'react';
 import {
+  AutoscaleInfo,
   CandlestickSeries,
   createChart,
   CrosshairMode,
@@ -133,10 +134,14 @@ export default function PriceChart({ candles, source, interval, replayUntil, lev
   useEffect(() => {
     const series = seriesRef.current;
     if (!series) return;
+    // Always keep a provider — passing `undefined` does NOT reset a previously
+    // set one in lightweight-charts 5.2.0. When there's no pinned range, defer to
+    // the library's own autoscale via `baseImplementation()`; otherwise pin it.
     series.applyOptions({
-      autoscaleInfoProvider: priceRange == null
-        ? undefined
-        : () => ({ priceRange: { minValue: priceRange.min, maxValue: priceRange.max } }),
+      autoscaleInfoProvider: (baseImplementation: () => AutoscaleInfo | null) =>
+        priceRange == null
+          ? baseImplementation()
+          : { priceRange: { minValue: priceRange.min, maxValue: priceRange.max } },
     });
     chartRef.current?.priceScale('right').applyOptions({ autoScale: true }); // re-arm after user axis-drag
   }, [priceRange]);

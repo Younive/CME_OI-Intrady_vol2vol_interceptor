@@ -41,11 +41,17 @@ interface YahooChart {
 
 const r2 = (n: number) => Math.round(n * 100) / 100;
 
-async function fetchYahoo(symbol: string, interval: string, period1: number, period2: number): Promise<Candle[]> {
+// Per-leg fetch cap and the aggregate budget shared across all fallback legs
+// (4 legs × 5s each could otherwise stall a route for 20s).
+const PER_LEG_MS = 5000;
+const OVERALL_BUDGET_MS = 8000;
+
+async function fetchYahoo(symbol: string, interval: string, period1: number, period2: number, timeoutMs = PER_LEG_MS): Promise<Candle[]> {
   const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}`
     + `?interval=${interval}&period1=${period1}&period2=${period2}`;
-  // 5s cap so a hung Yahoo doesn't stall the route; abort throws → caller catch.
-  const r = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0' }, signal: AbortSignal.timeout(5000) });
+  // Abort past the caller-supplied budget so a hung Yahoo doesn't stall the
+  // route; abort throws → caller catch.
+  const r = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0' }, signal: AbortSignal.timeout(timeoutMs) });
   if (!r.ok) throw new Error(`yahoo ${r.status}`);
   const j = (await r.json()) as YahooChart;
   const res = j.chart?.result?.[0];
@@ -86,10 +92,13 @@ export async function fetchCandles(product: string, date: string, days = 6): Pro
     legs.push({ symbol, source, interval: '5m' }, { symbol, source, interval: '1h' });
   }
 
+  const deadline = Date.now() + OVERALL_BUDGET_MS;
   for (const leg of legs) {
+    const remaining = deadline - Date.now();
+    if (remaining <= 0) break; // aggregate budget spent → don't start more legs
     let candles: Candle[];
     try {
-      candles = await fetchYahoo(leg.symbol, leg.interval, fetchStart, dayEnd);
+      candles = await fetchYahoo(leg.symbol, leg.interval, fetchStart, dayEnd, Math.min(PER_LEG_MS, remaining));
     } catch {
       continue; // dead leg (timeout/HTTP error) → try the next one
     }
