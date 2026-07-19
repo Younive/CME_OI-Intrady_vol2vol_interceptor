@@ -2,7 +2,6 @@
 
 import React, { useMemo } from 'react';
 import { Snapshot } from '@/lib/backtest';
-import { ui } from '@/lib/ui';
 import {
   Line,
   XAxis,
@@ -31,12 +30,12 @@ const themeColors = {
 
 export default function DistributionCharts({
   data,
-  viewMode,
   mounted,
+  fill = false,
 }: {
   data: Snapshot;
-  viewMode: 'intraday' | 'oi';
   mounted: boolean;
+  fill?: boolean; // fill the flex parent (backtest no-scroll page) instead of fixed height
 }) {
   const chartData = useMemo(() => {
     if (!data || !data.Call || !data.Put) return [];
@@ -102,36 +101,31 @@ export default function DistributionCharts({
   }, [xDomain]);
 
   return (
-    <section className="w-full">
-      <div className="mt-2 mb-5 flex items-center justify-between px-2">
-        <h2 className="py-1 text-[1.1rem] font-semibold text-slate-300">Call/Put Breakdown</h2>
-      </div>
-      <div className={ui.chartWrapper}>
-        {mounted && (
-          <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart data={chartData}>
+    <div className={fill ? 'min-h-0 w-full flex-1' : 'h-[300px] w-full max-[600px]:h-[260px]'}>
+      {mounted && (
+        <ResponsiveContainer width="100%" height="100%">
+          <ComposedChart data={chartData} margin={{ top: 32, right: 12, left: 0, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={themeColors.grid} />
               {/* ±1/2/3 SD shaded bands (widest first so nesting reads right). */}
               {bands.map((b, i) => (
                 <ReferenceArea key={`band-${i}`} yAxisId="left" x1={b.from} x2={b.to} fill={b.color || 'rgba(169,169,169,.15)'} fillOpacity={1} stroke="none" ifOverflow="hidden" />
               ))}
-              <XAxis dataKey="strike" type="number" domain={xDomain} ticks={xTicks.length ? xTicks : undefined} stroke={themeColors.text} fontSize={12} tickLine={true} axisLine={true} allowDataOverflow={false} />
+              <XAxis dataKey="strike" type="number" domain={xDomain} ticks={xTicks.length ? xTicks : undefined} tickFormatter={(v: number) => String(Math.round(v))} stroke={themeColors.text} fontSize={12} tickLine={true} axisLine={true} allowDataOverflow={false} />
               <YAxis yAxisId="left" stroke={themeColors.text} fontSize={12} tickLine={false} axisLine={false} />
               <YAxis yAxisId="right" orientation="right" stroke={themeColors.vol} fontSize={12} tickLine={false} axisLine={false} domain={['auto', 'auto']} />
               <Tooltip contentStyle={{ backgroundColor: 'var(--bg-elevated)', border: '1px solid var(--border-default)', borderRadius: '8px', color: 'var(--text-primary)' }} itemStyle={{ color: 'var(--text-primary)' }} cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }} />
-              <Legend verticalAlign="top" height={36} wrapperStyle={{ paddingBottom: '20px' }} />
+              <Legend verticalAlign="top" align="center" height={28} wrapperStyle={{ top: -6, paddingBottom: '16px' }} />
               {/* Scraped ΔP/ΔC strikes. */}
               {deltaLines.map((l, i) => (
                 <ReferenceLine key={`delta-${i}`} x={l.value} yAxisId="left" stroke={themeColors.delta} strokeDasharray="4 4" label={{ value: l.label?.text, position: 'top', fill: themeColors.delta, fontSize: 11 }} />
               ))}
-              <ReferenceLine x={data.FuturePrice} yAxisId="left" stroke={themeColors.future} strokeWidth={3} strokeDasharray="8 4" label={{ value: `${data.FuturePrice}`, position: 'insideTopLeft', fill: themeColors.future, fontSize: 16, fontWeight: 'bold' }} />
+              <ReferenceLine x={data.FuturePrice} yAxisId="left" stroke={themeColors.future} strokeWidth={3} strokeDasharray="8 4" label={{ value: `${Math.round(data.FuturePrice)}`, position: 'insideTopLeft', fill: themeColors.future, fontSize: 16, fontWeight: 'bold' }} />
               <Bar yAxisId="left" dataKey="call" fill={themeColors.call} radius={[4, 4, 0, 0]} name="Calls" barSize={10} />
               <Bar yAxisId="left" dataKey="put" fill={themeColors.put} radius={[4, 4, 0, 0]} name="Puts" barSize={10} />
               <Line yAxisId="right" type="monotone" dataKey="volSettle" stroke={themeColors.vol} dot={false} strokeWidth={2} name="Vol Settle %" />
-            </ComposedChart>
-          </ResponsiveContainer>
-        )}
-      </div>
-    </section>
+          </ComposedChart>
+        </ResponsiveContainer>
+      )}
+    </div>
   );
 }

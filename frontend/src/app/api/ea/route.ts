@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PRODUCTS, rangeMoves, sdLevels, topOiStrikes, fmtICT, todayICT } from '@/lib/backtest';
+import { rangeMoves, sdLevels, topOiStrikes, fmtICT, todayICT } from '@/lib/backtest';
 import { fetchOpen } from '@/lib/open';
 import { secOf, nearestSnap, latestSnap } from '@/lib/snaps';
+import { bad, guard, reqProduct } from '@/lib/api';
 
 const DAY_MS = 86_400_000;
 // sdSnap's DTE must sit near the target: above = cross hasn't happened yet
@@ -13,17 +14,12 @@ const DTE_TOL = 0.05;
 // anchored to the session open, plus the latest CME future price so the EA
 // can offset levels onto broker (spot/CFD) prices.
 export async function GET(req: NextRequest) {
-  const product = req.nextUrl.searchParams.get('product') || '';
+  const product = reqProduct(req);
+  if (!product) return bad('bad product');
   const dte = Number(req.nextUrl.searchParams.get('dte') || '0.6');
+  if (!(dte > 0 && dte < 1)) return bad('bad dte (0..1)');
 
-  if (!PRODUCTS.includes(product as never)) {
-    return NextResponse.json({ error: 'bad product' }, { status: 400 });
-  }
-  if (!(dte > 0 && dte < 1)) {
-    return NextResponse.json({ error: 'bad dte (0..1)' }, { status: 400 });
-  }
-
-  try {
+  return guard('api/ea', async () => {
     const latest = await latestSnap(product);
     if (!latest) return NextResponse.json({ ok: false, reason: 'no-data' });
     if (latest.DTE == null) return NextResponse.json({ ok: false, reason: 'no-sd' });
@@ -63,8 +59,5 @@ export async function GET(req: NextRequest) {
       sdAt: sdRes.snap.ExtractedAt,
       day: todayICT(),
     });
-  } catch (e) {
-    console.error('api/ea', e); // detail server-side only
-    return NextResponse.json({ error: 'internal error' }, { status: 500 });
-  }
+  });
 }

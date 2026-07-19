@@ -108,6 +108,7 @@ export function topOiStrikes(snap: Snapshot, n = 8): number[] {
     .sort((a, b) => a - b);
 }
 
+
 // Snapshot whose DTE is closest to target (0.6 / 0.7). null if none carry DTE.
 export function nearestDTE(snaps: Snapshot[], target: number): Snapshot | null {
   let best: Snapshot | null = null;
@@ -139,7 +140,18 @@ export const fmtICT = (iso: string) =>
 export const todayICT = () =>
   new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Bangkok' }).format(new Date());
 
-const MONTHS = [
+// UTC ISO -> its ICT calendar date as YYYY-MM-DD (the day a replay position
+// belongs to; bucket paths are ICT days).
+export const ictDate = (iso: string) =>
+  new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Bangkok' }).format(new Date(iso));
+
+// The Globex *session* day a UTC ISO belongs to: the session runs 05:00 → 05:00
+// ICT, so 00:00–05:00 ICT belongs to the previous calendar day. Shift −5h then
+// take the ICT date.
+export const sessionDay = (iso: string) =>
+  ictDate(new Date(Date.parse(iso) - 5 * 3600 * 1000).toISOString());
+
+export const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December',
 ];
