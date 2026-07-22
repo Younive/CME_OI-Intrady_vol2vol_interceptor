@@ -17,6 +17,30 @@ export function reqDate(req: NextRequest): string | null {
   return /^\d{4}-\d{2}-\d{2}$/.test(d) ? d : null;
 }
 
+// Static shared secret for the public v1 feed. Env name is deliberately NOT
+// NEXT_PUBLIC_* — that prefix ships the value into the browser bundle. Unset
+// env = endpoint disabled (fail closed), so a misconfigured deploy serves 401
+// rather than open data.
+export const hasKey = (req: NextRequest) =>
+  !!process.env.API_KEY && req.headers.get('x-api-key') === process.env.API_KEY;
+
+// EA feed gate. Opt-in: enforced only when EA_API_KEY is set, so the route stays
+// open until the EA is configured with the token. Header-only (x-api-key) —
+// keeps the secret out of URLs/access logs.
+export function eaAuthed(req: NextRequest): boolean {
+  const key = process.env.EA_API_KEY;
+  if (!key) return true; // gate off until configured
+  return req.headers.get('x-api-key') === key;
+}
+
+// CORS for the public feed. ponytail: single origin env, '*' default —
+// allowlist / rate limit only if abuse shows up.
+export function cors<T extends NextResponse>(r: T): T {
+  r.headers.set('Access-Control-Allow-Origin', process.env.API_CORS_ORIGIN || '*');
+  r.headers.set('Access-Control-Allow-Headers', 'x-api-key, if-none-match');
+  return r;
+}
+
 // Run a route body; log + 500 on throw (detail stays server-side).
 export async function guard(tag: string, fn: () => Promise<NextResponse>): Promise<NextResponse> {
   try {

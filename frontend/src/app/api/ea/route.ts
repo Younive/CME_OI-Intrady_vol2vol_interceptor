@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { rangeMoves, sdLevels, topOiStrikes, fmtICT, todayICT } from '@/lib/backtest';
 import { fetchOpen } from '@/lib/open';
 import { secOf, nearestSnap, latestSnap } from '@/lib/snaps';
-import { bad, guard, reqProduct } from '@/lib/api';
+import { bad, eaAuthed, guard, reqProduct } from '@/lib/api';
 
 const DAY_MS = 86_400_000;
 // sdSnap's DTE must sit near the target: above = cross hasn't happened yet
@@ -14,6 +14,7 @@ const DTE_TOL = 0.05;
 // anchored to the session open, plus the latest CME future price so the EA
 // can offset levels onto broker (spot/CFD) prices.
 export async function GET(req: NextRequest) {
+  if (!eaAuthed(req)) return bad('unauthorized', 401);
   const product = reqProduct(req);
   if (!product) return bad('bad product');
   const dte = Number(req.nextUrl.searchParams.get('dte') || '0.6');

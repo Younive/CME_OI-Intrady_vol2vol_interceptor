@@ -49,17 +49,23 @@ export async function nearestSnap(product: string, atSec: number, have: string) 
   return null;
 }
 
+// Newest blob in today's ICT dir — list only, no download. Blob names are
+// zero-padded HH-MM-SS.json so lexical max = latest. Callers that only need the
+// identity (ETag, change check) avoid paying for the body.
+export async function latestFile(product: string, dir: 'OI' | 'Intraday'): Promise<File | null> {
+  const [files] = await storage.bucket(BUCKET).getFiles({ prefix: dayPrefix(product, todayICT(), dir) });
+  return files.length ? files.reduce((a, b) => (a.name > b.name ? a : b)) : null;
+}
+
 // Today's newest snapshot from the first dir that has one (default: Intraday
-// preferred, OI fallback). Blob names are zero-padded HH-MM-SS.json so lexical
-// max = latest. One download.
+// preferred, OI fallback). One download.
 export async function latestSnap(
   product: string,
   dirs: readonly ('OI' | 'Intraday')[] = ['Intraday', 'OI'],
 ): Promise<Snapshot | null> {
   for (const dir of dirs) {
-    const [files] = await storage.bucket(BUCKET).getFiles({ prefix: dayPrefix(product, todayICT(), dir) });
-    if (!files.length) continue;
-    return downloadSnap(files.reduce((a, b) => (a.name > b.name ? a : b)));
+    const f = await latestFile(product, dir);
+    if (f) return downloadSnap(f);
   }
   return null;
 }

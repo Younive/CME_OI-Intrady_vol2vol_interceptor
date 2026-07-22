@@ -22,6 +22,12 @@ export async function GET(req: NextRequest) {
       loadDir(product, date, 'Intraday'),
       loadDir(product, date, 'OI'),
     ]);
+    // Not edge-cached: snapshots are built from incrementally-published GCS blobs
+    // with no day-complete manifest, so a past-date response can't be proven whole
+    // (a rollover-straggler upload lands after the day flips to "past"; a mid-day
+    // scraper crash leaves a partial day). Cache only once the publisher emits a
+    // completeness signal. candles/open cache instead — Yahoo serves a whole past
+    // day or nothing, which is that signal.
     return NextResponse.json({ intraday, oi });
   });
 }

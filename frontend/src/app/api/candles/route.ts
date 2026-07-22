@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { todayICT } from '@/lib/backtest';
 import { fetchCandles } from '@/lib/candles';
 import { bad, guard, reqDate, reqProduct } from '@/lib/api';
 
@@ -13,6 +14,12 @@ export async function GET(req: NextRequest) {
 
   return guard('api/candles', async () => {
     const day = await fetchCandles(product, date, days);
-    return NextResponse.json(day ?? { candles: [], source: 'futures', interval: '5m' });
+    // Cache a past ICT day at the edge, but only a real (non-empty) result — a
+    // null/empty is a transient Yahoo miss, not a closed-day fact, so caching it
+    // would pin the failure. Short window: Yahoo can revise historical bars.
+    const init = date < todayICT() && day?.candles.length
+      ? { headers: { 'Cache-Control': 'public, s-maxage=3600, max-age=600' } }
+      : undefined;
+    return NextResponse.json(day ?? { candles: [], source: 'futures', interval: '5m' }, init);
   });
 }
