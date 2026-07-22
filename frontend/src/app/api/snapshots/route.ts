@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { dayPrefix, Snapshot } from '@/lib/backtest';
+import { dayPrefix, todayICT, Snapshot } from '@/lib/backtest';
 import { storage, BUCKET } from '@/lib/gcs';
 import { downloadSnap } from '@/lib/snaps';
 import { bad, guard, reqDate, reqProduct } from '@/lib/api';
@@ -22,6 +22,11 @@ export async function GET(req: NextRequest) {
       loadDir(product, date, 'Intraday'),
       loadDir(product, date, 'OI'),
     ]);
-    return NextResponse.json({ intraday, oi });
+    // Past ICT day is immutable — let the edge cache it (both YYYY-MM-DD, lexical
+    // compare). Today stays uncached (still capturing).
+    const init = date < todayICT()
+      ? { headers: { 'Cache-Control': 'public, s-maxage=86400, max-age=3600' } }
+      : undefined;
+    return NextResponse.json({ intraday, oi }, init);
   });
 }

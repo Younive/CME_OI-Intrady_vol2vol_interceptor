@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { dayPrefix, todayICT, Snapshot } from '@/lib/backtest';
-import { storage, BUCKET } from '@/lib/gcs';
-import { downloadSnap } from '@/lib/snaps';
+import { Snapshot } from '@/lib/backtest';
+import { downloadSnap, latestFile } from '@/lib/snaps';
 import { bad, guard, reqProduct } from '@/lib/api';
 
 // Newest snapshot for today's ICT dir. Blob names are zero-padded `HH-MM-SS.json`
@@ -18,9 +17,8 @@ async function latestDir(
   dir: 'OI' | 'Intraday',
   have: string,
 ): Promise<DirLatest> {
-  const [files] = await storage.bucket(BUCKET).getFiles({ prefix: dayPrefix(product, todayICT(), dir) });
-  if (!files.length) return 'empty';
-  const newest = files.reduce((a, b) => (a.name > b.name ? a : b));
+  const newest = await latestFile(product, dir);
+  if (!newest) return 'empty';
   if (newest.name === have) return 'unchanged'; // no download
   return { snap: await downloadSnap(newest), path: newest.name };
 }
