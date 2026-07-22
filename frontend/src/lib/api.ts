@@ -25,15 +25,12 @@ export const hasKey = (req: NextRequest) =>
   !!process.env.API_KEY && req.headers.get('x-api-key') === process.env.API_KEY;
 
 // EA feed gate. Opt-in: enforced only when EA_API_KEY is set, so the route stays
-// open until the EA is configured with the token. Accepts header or query param
-// because MQL5 WebRequest custom-header support is uncertain.
-// ponytail: query-param key lands in access logs; prefer the header. TLS covers
-// the wire either way. Tighten to header-only once EA capability is confirmed.
+// open until the EA is configured with the token. Header-only (x-api-key) —
+// keeps the secret out of URLs/access logs.
 export function eaAuthed(req: NextRequest): boolean {
   const key = process.env.EA_API_KEY;
   if (!key) return true; // gate off until configured
-  return req.headers.get('x-api-key') === key
-    || req.nextUrl.searchParams.get('key') === key;
+  return req.headers.get('x-api-key') === key;
 }
 
 // CORS for the public feed. ponytail: single origin env, '*' default —

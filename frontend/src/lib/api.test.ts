@@ -27,28 +27,25 @@ describe('hasKey', () => {
   });
 });
 
-// EA gate is opt-in (open until EA_API_KEY set) and accepts header OR ?key=.
-const eaReq = (opts: { header?: string; query?: string }) =>
-  new NextRequest(
-    `http://x/api/ea?product=gold${opts.query == null ? '' : `&key=${opts.query}`}`,
-    { headers: opts.header == null ? {} : { 'x-api-key': opts.header } },
-  );
+// EA gate is opt-in (open until EA_API_KEY set), header-only (x-api-key).
+const eaReq = (header?: string) =>
+  new NextRequest('http://x/api/ea?product=gold', {
+    headers: header == null ? {} : { 'x-api-key': header },
+  });
 
 describe('eaAuthed', () => {
   it('stays open when EA_API_KEY is unset', () => {
-    expect(eaAuthed(eaReq({}))).toBe(true);
+    expect(eaAuthed(eaReq('anything'))).toBe(true);
   });
 
-  it('rejects wrong header and wrong query when set', () => {
+  it('rejects a wrong or missing header when set', () => {
     process.env.EA_API_KEY = 'secret';
-    expect(eaAuthed(eaReq({}))).toBe(false);
-    expect(eaAuthed(eaReq({ header: 'wrong' }))).toBe(false);
-    expect(eaAuthed(eaReq({ query: 'wrong' }))).toBe(false);
+    expect(eaAuthed(eaReq())).toBe(false);
+    expect(eaAuthed(eaReq('wrong'))).toBe(false);
   });
 
-  it('accepts matching header or query when set', () => {
+  it('accepts the matching header when set', () => {
     process.env.EA_API_KEY = 'secret';
-    expect(eaAuthed(eaReq({ header: 'secret' }))).toBe(true);
-    expect(eaAuthed(eaReq({ query: 'secret' }))).toBe(true);
+    expect(eaAuthed(eaReq('secret'))).toBe(true);
   });
 });
